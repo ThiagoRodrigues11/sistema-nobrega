@@ -27,7 +27,7 @@ router.get('/', authenticateToken, authorizeRole('admin'), async (req, res) => {
           ]
         }
       ]
-    });
+      });
     res.json(vendas);
   } catch (err) {
     res.status(500).json({ message: err.message });
