@@ -1,0 +1,120 @@
+.container {
+  background: #fff;
+  border-radius: 18px;
+  box-shadow: 0 4px 32px rgba(60,60,90,0.10);
+  padding: 40px 36px 32px 36px;
+  max-width: 420px;
+  margin: 48px auto;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+}
+
+h2, h1 {
+  text-align: center;
+  font-weight: 800;
+  color: #23213d;
+  margin-bottom: 30px;
+}
+
+label {
+  font-weight: 600;
+  color: #23213d;
+  margin-bottom: 6px;
+  margin-top: 18px;
+}
+
+input[type="text"], textarea, select {
+  width: 100%;
+  border: 1.5px solid #e0e0e0;
+  border-radius: 8px;
+  padding: 12px 10px;
+  font-size: 1rem;
+  margin-bottom: 12px;
+  background: #f8f9fb;
+  transition: border .2s;
+}
+input[type="text"]:focus, textarea:focus, select:focus {
+  border: 1.5px solid #6c63ff;
+  outline: none;
+}
+
+button {
+  padding: 10px 0;
+  border-radius: 8px;
+  border: none;
+  font-weight: 700;
+  font-size: 1.05rem;
+  background: #6c63ff;
+  color: #fff;
+  margin-top: 10px;
+  margin-right: 8px;
+  cursor: pointer;
+  transition: background .2s;
+}
+button:hover {
+  background: #554ee0;
+}
+
+button[type="button"] {
+  background: #ccc;
+  color: #23213d;
+}
+
+.formGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 18px;
+}
+
+input[type="file"] {
+  background: #f8f9fb;
+  border-radius: 8px;
+  margin-top: 4px;
+  font-size: 1rem;
+  padding: 7px 0;
+}
+
+input[type="url"] {
+  width: 100%;
+  border: 1.5px solid #e0e0e0;
+  border-radius: 8px;
+  padding: 12px 10px;
+  font-size: 1rem;
+  background: #f8f9fb;
+  margin-bottom: 0;
+  transition: border .2s;
+}
+input[type="url"]:focus {
+  border: 1.5px solid #6c63ff;
+  outline: none;
+}
+button[type="button"]:hover {
+  background: #bdbdbd;
+}
+
+input[type="file"] {
+  margin-bottom: 12px;
+}
+
+img {
+  max-width: 100%;
+  max-height: 140px;
+  margin: 8px 0 12px 0;
+  border-radius: 10px;
+  border: 1px solid #eee;
+}
+
+.error {
+  color: #e53935;
+  margin-bottom: 10px;
+  text-align: center;
+}
+
+.actions {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  margin-top: 18px;
+}
