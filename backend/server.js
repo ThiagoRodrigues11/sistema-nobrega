@@ -14,6 +14,17 @@ import config from './config/database.js';
 dotenv.config({ path: path.join(__dirname, '.env') });
 console.log('JWT_SECRET:', process.env.JWT_SECRET);
 
+// Rota de teste CORS
+const app = express();
+app.get('/test-cors', (req, res) => {
+    res.header('Access-Control-Allow-Origin', '*');
+    res.header('Access-Control-Allow-Credentials', 'true');
+    res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+    res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization, X-Requested-With, Origin');
+    res.header('Access-Control-Max-Age', '86400');
+    res.json({ message: 'CORS test successful' });
+});
+
 // Configuração do CORS
 const corsOptions = {
     origin: ['https://vestalize.com', 'http://vestalize.com'],
@@ -25,9 +36,6 @@ const corsOptions = {
     optionsSuccessStatus: 204,
     maxAge: 86400
 };
-
-const app = express();
-const PORT = process.env.PORT || 5000;
 
 // Middleware para CORS
 app.use((req, res, next) => {
@@ -60,15 +68,6 @@ app.use((req, res, next) => {
 // Configuração do CORS com cors
 app.use(cors(corsOptions));
 
-// Adiciona uma rota de teste para CORS
-app.get('/test-cors', (req, res) => {
-    res.header('Access-Control-Allow-Origin', '*');
-    res.header('Access-Control-Allow-Credentials', 'true');
-    res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
-    res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization, X-Requested-With');
-    res.json({ message: 'CORS test successful' });
-});
-
 // Configuração do Sequelize com base no ambiente
 const env = process.env.NODE_ENV || 'development';
 const dbConfig = config[env];
@@ -86,6 +85,8 @@ const sequelize = new Sequelize(
         define: { timestamps: false }
     }
 );
+
+const PORT = process.env.PORT || 5000;
 
 // Middleware
 app.use(express.json());
