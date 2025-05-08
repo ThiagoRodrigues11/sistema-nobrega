@@ -37,14 +37,15 @@
   },
   "scripts": {
     "prebuild": "npm install -D webpack-cli",
-    "start": "webpack serve --mode development",
+    "start": "webpack serve --mode development --port 10000",
     "build": "webpack --mode production",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
   "proxy": "https://sistema-nobrega-1.onrender.com/api",
   "devServer": {
-    "allowedHosts": "all"
+    "allowedHosts": "all",
+    "port": 10000
   },
   "eslintConfig": {
     "extends": [
