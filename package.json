@@ -45,7 +45,11 @@
   "proxy": "https://sistema-nobrega-1.onrender.com/api",
   "devServer": {
     "allowedHosts": "all",
-    "port": 10000
+    "port": 10000,
+    "disableHostCheck": true,
+    "headers": {
+      "Access-Control-Allow-Origin": "*"
+    }
   },
   "eslintConfig": {
     "extends": [
