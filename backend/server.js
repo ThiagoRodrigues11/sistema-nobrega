@@ -16,23 +16,20 @@ import config from './config/database.js';
 dotenv.config();
 console.log('JWT_SECRET:', process.env.JWT_SECRET);
 
-// Middleware para CORS
-const corsMiddleware = (req, res, next) => {
-    // Permite CORS para seu domínio
-    res.header('Access-Control-Allow-Origin', process.env.CORS_ORIGIN || 'https://vestalize.com');
-    // Permite credenciais (cookies, headers de autorização)
-    res.header('Access-Control-Allow-Credentials', 'true');
-    // Permite os métodos HTTP
-    res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
-    // Permite os headers
-    res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization, X-Requested-With, Accept');
-    
-    // Se for uma requisição OPTIONS (preflight), responde com 200
-    if (req.method === 'OPTIONS') {
-        return res.status(200).end();
-    }
-    
-    next();
+// Configuração do CORS
+const allowedOrigins = ['https://vestalize.com', 'http://vestalize.com'];
+
+const corsOptions = {
+    origin: function (origin, callback) {
+        if (allowedOrigins.indexOf(origin) !== -1 || !origin) {
+            callback(null, true);
+        } else {
+            callback(new Error('Not allowed by CORS'));
+        }
+    },
+    credentials: true,
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With']
 };
 
 // Configuração do Sequelize com base no ambiente
@@ -57,7 +54,7 @@ const app = express();
 const PORT = process.env.PORT || 5000;
 
 // Middleware
-app.use(corsMiddleware);
+app.use(cors(corsOptions));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
