@@ -13,7 +13,10 @@ module.exports = {
       '@': path.resolve(__dirname, 'src')
     },
     extensions: ['.js', '.jsx', '.json'],
-    modules: [path.resolve(__dirname, 'src'), 'node_modules']
+    modules: [path.resolve(__dirname, 'src'), 'node_modules'],
+    fallback: {
+      path: require.resolve('path-browserify')
+    }
   },
   devServer: {
     static: {
