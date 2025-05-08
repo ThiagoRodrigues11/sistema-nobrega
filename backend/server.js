@@ -14,20 +14,26 @@ import config from './config/database.js';
 dotenv.config({ path: path.join(__dirname, '.env') });
 console.log('JWT_SECRET:', process.env.JWT_SECRET);
 
+// Verificação do ambiente
+const isProd = process.env.NODE_ENV === 'production';
+console.log('Ambiente:', isProd ? 'Produção' : 'Desenvolvimento');
+
 // Rota de teste CORS
 const app = express();
 app.get('/test-cors', (req, res) => {
-    res.header('Access-Control-Allow-Origin', '*');
+    res.header('Access-Control-Allow-Origin', req.headers.origin || '*');
     res.header('Access-Control-Allow-Credentials', 'true');
     res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
     res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization, X-Requested-With, Origin');
     res.header('Access-Control-Max-Age', '86400');
-    res.json({ message: 'CORS test successful' });
+    res.json({ message: 'CORS test successful', origin: req.headers.origin, environment: isProd ? 'production' : 'development' });
 });
 
 // Configuração do CORS
 const corsOptions = {
-    origin: ['https://vestalize.com', 'http://vestalize.com'],
+    origin: isProd 
+        ? '*' 
+        : ['https://vestalize.com', 'http://vestalize.com', 'http://localhost:3000'],
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With', 'Origin'],
@@ -41,7 +47,11 @@ const corsOptions = {
 app.use((req, res, next) => {
     // Define a origem permitida
     const origin = req.headers.origin;
-    if (origin === 'https://vestalize.com' || origin === 'http://vestalize.com') {
+    
+    // Em produção, aceita qualquer origem
+    if (isProd) {
+        res.header('Access-Control-Allow-Origin', origin || '*');
+    } else if (origin === 'https://vestalize.com' || origin === 'http://vestalize.com' || origin === 'http://localhost:3000') {
         res.header('Access-Control-Allow-Origin', origin);
     }
     
