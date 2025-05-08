@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { getPosts } from '../../api/posts';
+import { getPosts } from '@api/posts';
 import { useNavigate } from 'react-router-dom';
 import styles from './PostsList.module.css';
 
