@@ -1,9 +1,10 @@
-import { post, get, del } from './api';
+import { post, get, del } from '../../api.js';
 
 const authApi = {
   login: async (username, password) => {
     try {
-      const data = await post('/auth/login', { username, password });
+      const response = await post('/auth/login', { username, password });
+      const data = response.data;
       if (data.token) {
         localStorage.setItem('token', data.token);
         if (data.user) localStorage.setItem('user', JSON.stringify(data.user));
@@ -15,10 +16,12 @@ const authApi = {
   },
   logout: async () => {
     try {
-      await del('/auth/logout');
+      const response = await get('/auth/logout');
       localStorage.removeItem('token');
+      localStorage.removeItem('user');
+      return response.data;
     } catch (error) {
-      console.error('Erro ao fazer logout:', error);
+      throw new Error('Erro ao fazer logout');
     }
   },
   getMe: async () => {
