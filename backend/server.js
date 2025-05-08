@@ -17,16 +17,8 @@ dotenv.config();
 console.log('JWT_SECRET:', process.env.JWT_SECRET);
 
 // Configuração do CORS
-const allowedOrigins = ['https://vestalize.com', 'http://vestalize.com'];
-
 const corsOptions = {
-    origin: function (origin, callback) {
-        if (allowedOrigins.indexOf(origin) !== -1 || !origin) {
-            callback(null, true);
-        } else {
-            callback(new Error('Not allowed by CORS'));
-        }
-    },
+    origin: true,
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With']
