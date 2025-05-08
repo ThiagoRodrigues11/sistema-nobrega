@@ -11,7 +11,7 @@ import { fileURLToPath } from 'url';
 import config from './config/database.js';
 
 // Configuração do ambiente
-dotenv.config();
+dotenv.config({ path: path.join(__dirname, '.env') });
 console.log('JWT_SECRET:', process.env.JWT_SECRET);
 
 // Configuração do CORS
@@ -19,7 +19,7 @@ const corsOptions = {
     origin: ['https://vestalize.com', 'http://vestalize.com'],
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-    allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With'],
+    allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With', 'Origin'],
     exposedHeaders: ['Authorization'],
     preflightContinue: false,
     optionsSuccessStatus: 204,
@@ -44,7 +44,7 @@ app.use((req, res, next) => {
     res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
     
     // Configura os headers permitidos
-    res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization, X-Requested-With');
+    res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization, X-Requested-With, Origin');
     
     // Configura os headers expostos
     res.header('Access-Control-Expose-Headers', 'Authorization');
