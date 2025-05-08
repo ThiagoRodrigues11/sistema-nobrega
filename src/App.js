@@ -18,7 +18,7 @@ import UsersList from '@/components/auth/UsersList';
 import UserEdit from '@/components/auth/UserEdit';
 import UsuariosAdmin from '@/pages/Admin/UsuariosAdmin';
 import RelatoriosAdmin from '@/pages/Admin/RelatoriosAdmin';
-import RequireAuthOrLogin from '@/RequireAuthOrLogin';
+import RequireAuthOrLogin from './RequireAuthOrLogin';
 
 function App() {
   return (
