@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { getCategorias, createCategoria, updateCategoria, deleteCategoria } from '../../api/categorias';
+import { getCategorias, addCategoria, updateCategoria, deleteCategoria } from '../../api/categorias';
 
 const CategoriasAdmin = () => {
   const [categorias, setCategorias] = useState([]);
@@ -17,7 +17,7 @@ const CategoriasAdmin = () => {
         await updateCategoria(editId, form);
         setMsg('Categoria atualizada!');
       } else {
-        await createCategoria(form);
+        await addCategoria(form);
         setMsg('Categoria criada!');
       }
       setForm({ nome: '', descricao: '' });

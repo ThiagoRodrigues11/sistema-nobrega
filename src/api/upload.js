@@ -1,4 +1,4 @@
-import { post } from './api';
+import { post } from '../api';
 
 export async function uploadImagem(file) {
   try {
