@@ -5,7 +5,7 @@ import LoginPage from '@/pages/Auth/LoginPage';
 import PostsList from '@/components/blog/PostsList';
 import PostDetail from '@/components/blog/PostDetail';
 import PostForm from '@/components/blog/PostForm';
-import PDV from '@/pages/PDV';
+import PDV from './pages/PDV';
 import PrivateRoute from '@/components/auth/PrivateRoute';
 import Dashboard from '@/pages/Admin/Dashboard';
 import ProdutosAdmin from '@/pages/Admin/ProdutosAdmin';
