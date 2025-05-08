@@ -33,6 +33,7 @@
     "webpack-dev-server": "^4.15.1"
   },
   "scripts": {
+    "prebuild": "npm install -D webpack-cli",
     "start": "webpack serve --mode development",
     "build": "webpack --mode production",
     "test": "react-scripts test",
