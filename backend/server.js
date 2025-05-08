@@ -16,6 +16,14 @@ import config from './config/database.js';
 dotenv.config();
 console.log('JWT_SECRET:', process.env.JWT_SECRET);
 
+// Configuração do CORS
+const corsOptions = {
+    origin: ['https://vestalize.com', 'http://vestalize.com'],
+    credentials: true,
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With']
+};
+
 // Configuração do Sequelize com base no ambiente
 const env = process.env.NODE_ENV || 'development';
 const dbConfig = config[env];
@@ -38,13 +46,7 @@ const app = express();
 const PORT = process.env.PORT || 5000;
 
 // Middleware
-app.use(cors({
-    origin: ['https://seu-dominio-do-frontend.com', 'http://localhost:3000'],
-    credentials: true,
-    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-    allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With']
-}));
-
+app.use(cors(corsOptions));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
