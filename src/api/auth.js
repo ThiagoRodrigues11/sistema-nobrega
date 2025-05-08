@@ -1,4 +1,4 @@
-import { post, get, del } from '@api/api.js';
+import { post, get, del } from '../api';
 
 const authApi = {
   login: async (username, password) => {
