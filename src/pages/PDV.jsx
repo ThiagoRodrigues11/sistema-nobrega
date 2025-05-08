@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { get, post } from '../../api';
+import { get, post } from '../api/api.js';
 import PersonalizationModal from '../components/pdv/PersonalizationModal';
 import styles from '../components/pdv/PDV.module.css';
 import { useNavigate } from 'react-router-dom';
