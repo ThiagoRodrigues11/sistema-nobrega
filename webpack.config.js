@@ -10,7 +10,7 @@ module.exports = {
   },
   resolve: {
     alias: {
-      '@': path.resolve(__dirname, 'src'),
+      '@': path.resolve(__dirname, 'src')
     },
     extensions: ['.js', '.jsx', '.json'],
     modules: [path.resolve(__dirname, 'src'), 'node_modules']
@@ -44,6 +44,14 @@ module.exports = {
           loader: 'babel-loader',
           options: {
             presets: ['@babel/preset-env', '@babel/preset-react'],
+            plugins: [
+              ['babel-plugin-module-resolver', {
+                root: ['./src'],
+                alias: {
+                  '@': './src'
+                }
+              }]
+            ]
           },
         },
       },
