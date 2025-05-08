@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#000000" />
+    <meta name="description" content="Nobrega Confeccões - Sistema de Gestão" />
+    <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo192.png" />
+    
+    <!-- Incluindo o manifesto com o atributo crossorigin -->
+    <link rel="manifest" href="%PUBLIC_URL%/manifest.json" crossorigin="use-credentials" />
+    
+    <title>Nobrega Confeccões</title>
+    
+    <!-- Meta tags para evitar problemas de cache -->
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Expires" content="0" />
+    
+    <!-- Meta tags para CORS -->
+    <meta http-equiv="Access-Control-Allow-Origin" content="*" />
+    <meta http-equiv="Access-Control-Allow-Methods" content="GET, POST, PUT, DELETE, OPTIONS" />
+    <meta http-equiv="Access-Control-Allow-Headers" content="Content-Type, Authorization, X-Requested-With, Origin" />
+  </head>
+  <body>
+    <noscript>Você precisa habilitar o JavaScript para usar esta aplicação.</noscript>
+    <div id="root"></div>
+    
+    <!-- Script para limpar cache relacionado aos problemas de CORS e manifesto -->
+    <script>
+      // Verificar se houve problemas de manifesto anteriormente
+      if (localStorage.getItem('manifest_error')) {
+        // Limpar cache do manifesto
+        fetch('%PUBLIC_URL%/manifest.json', { cache: 'reload', mode: 'cors' })
+          .then(response => {
+            console.log('Manifesto carregado com sucesso');
+            localStorage.removeItem('manifest_error');
+          })
+          .catch(error => {
+            console.error('Erro ao carregar manifesto:', error);
+            localStorage.setItem('manifest_error', 'true');
+          });
+      }
+      
+      // Ajuda a prevenir problemas de CORS testando a conexão
+      fetch('https://sistema-nobrega-1.onrender.com/api/auth/test-cors', {
+        method: 'GET',
+        mode: 'cors',
+        credentials: 'include',
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      })
+        .then(response => response.json())
+        .then(data => console.log('Teste CORS:', data))
+        .catch(error => console.error('Erro no teste CORS:', error));
+    </script>
+  </body>
+</html>

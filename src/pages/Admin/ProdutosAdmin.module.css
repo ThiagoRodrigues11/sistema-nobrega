@@ -1,0 +1,107 @@
+/* Estilo moderno para a tela de gestão de produtos */
+.adminContainer {
+  background: #f8f9fa;
+  min-height: 100vh;
+  padding: 32px 0;
+}
+.adminTitle {
+  text-align: center;
+  font-size: 2rem;
+  color: #1b2a41;
+  margin-bottom: 28px;
+  font-weight: 700;
+}
+.prodForm {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+  padding: 24px;
+  margin-bottom: 24px;
+  align-items: flex-end;
+}
+.prodForm input,
+.prodForm textarea {
+  flex: 1 1 180px;
+  padding: 10px;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  font-size: 1rem;
+  background: #f6f8fa;
+  transition: border 0.2s;
+}
+.prodForm input:focus,
+.prodForm textarea:focus {
+  border: 1.5px solid #236166;
+  outline: none;
+}
+.prodForm button {
+  background: #236166;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  padding: 10px 22px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.prodForm button:hover {
+  background: #1b4e52;
+}
+.prodTable {
+  width: 100%;
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+  overflow: hidden;
+  border-collapse: collapse;
+}
+.prodTable th, .prodTable td {
+  padding: 14px 10px;
+  text-align: left;
+  border-bottom: 1px solid #f0f0f0;
+}
+.prodTable th {
+  background: #236166;
+  color: #fff;
+  font-size: 1rem;
+  font-weight: 600;
+}
+.prodTable tr:last-child td {
+  border-bottom: none;
+}
+.prodTable td {
+  font-size: 0.98rem;
+}
+.prodTable button {
+  background: #f44336;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  padding: 6px 12px;
+  font-size: 0.95rem;
+  cursor: pointer;
+  margin-right: 6px;
+  transition: background 0.2s;
+}
+.prodTable button:hover {
+  background: #b71c1c;
+}
+.prodTable .editBtn {
+  background: #236166;
+  margin-right: 6px;
+}
+.prodTable .editBtn:hover {
+  background: #1b4e52;
+}
+.msg {
+  margin: 10px 0 18px 0;
+  padding: 10px 18px;
+  border-radius: 8px;
+  background: #e3fcec;
+  color: #236166;
+  font-weight: 500;
+  display: inline-block;
+}

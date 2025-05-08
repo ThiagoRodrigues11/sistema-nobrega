@@ -1,0 +1,109 @@
+.categoria-container {
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 16px #0001;
+  padding: 32px 28px 24px 28px;
+  max-width: 650px;
+  margin: 40px auto 0 auto;
+}
+
+.categoria-title {
+  font-size: 2rem;
+  font-weight: 700;
+  text-align: center;
+  margin-bottom: 28px;
+  color: #222;
+}
+
+.categoria-form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 28px;
+}
+.categoria-form input,
+.categoria-form textarea {
+  border: 1px solid #d3d3d3;
+  border-radius: 6px;
+  padding: 8px 12px;
+  font-size: 1rem;
+  outline: none;
+  transition: border 0.2s;
+}
+.categoria-form input:focus,
+.categoria-form textarea:focus {
+  border-color: #4f46e5;
+}
+.categoria-form button {
+  background: linear-gradient(90deg, #4f46e5 60%, #6366f1 100%);
+  color: #fff;
+  font-weight: 700;
+  border: none;
+  border-radius: 6px;
+  padding: 10px 0;
+  font-size: 1rem;
+  cursor: pointer;
+  margin-top: 8px;
+  transition: background 0.2s;
+}
+.categoria-form button:hover {
+  background: linear-gradient(90deg, #6366f1 60%, #4f46e5 100%);
+}
+
+.categoria-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 12px;
+  background: #f9f9fb;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 1px 6px #0001;
+}
+.categoria-table th, .categoria-table td {
+  padding: 12px 10px;
+  text-align: left;
+}
+.categoria-table th {
+  background: #f1f5f9;
+  color: #374151;
+  font-size: 1.05rem;
+}
+.categoria-table tr:not(:last-child) {
+  border-bottom: 1px solid #e5e7eb;
+}
+.categoria-table td button {
+  margin-right: 8px;
+  background: #4f46e5;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  padding: 7px 14px;
+  font-size: 0.98rem;
+  cursor: pointer;
+  font-weight: 500;
+  transition: background 0.2s;
+}
+.categoria-table td button:hover {
+  background: #6366f1;
+}
+
+.categoria-msg {
+  margin-bottom: 16px;
+  color: #256029;
+  background: #e8f5e9;
+  border-radius: 6px;
+  padding: 8px 14px;
+  font-weight: 600;
+  text-align: center;
+}
+
+@media (max-width: 700px) {
+  .categoria-container {
+    padding: 12px 4vw 20px 4vw;
+    max-width: 98vw;
+  }
+  .categoria-table th, .categoria-table td {
+    padding: 8px 2vw;
+    font-size: 0.97rem;
+  }
+}

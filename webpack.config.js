@@ -1,0 +1,74 @@
+const webpack = require('webpack');
+const path = require('path');
+
+module.exports = {
+  entry: './src/index.js',
+  output: {
+    path: path.resolve(__dirname, 'build'),
+    filename: 'bundle.js',
+    publicPath: '/'
+  },
+  resolve: {
+    alias: {
+      '@': path.resolve(__dirname, 'src')
+    },
+    extensions: ['.js', '.jsx', '.json'],
+    modules: [path.resolve(__dirname, 'src'), 'node_modules'],
+    fallback: {
+      path: require.resolve('path-browserify')
+    }
+  },
+  devServer: {
+    static: {
+      directory: path.join(__dirname, 'public'),
+    },
+    compress: true,
+    port: 3000,
+    host: '0.0.0.0',
+    proxy: {
+      '/api': {
+        target: 'https://sistema-nobrega-1.onrender.com/api',
+        changeOrigin: true,
+      },
+    },
+    setupMiddlewares: (middlewares, devServer) => {
+      if (!devServer) {
+        throw new Error('webpack-dev-server is not defined');
+      }
+      return middlewares;
+    },
+  },
+  module: {
+    rules: [
+      {
+        test: /\.js$|\.jsx$/,
+        exclude: /node_modules/,
+        use: {
+          loader: 'babel-loader',
+          options: {
+            presets: ['@babel/preset-env', '@babel/preset-react'],
+            plugins: [
+              ['babel-plugin-module-resolver', {
+                root: ['./src'],
+                alias: {
+                  '@': './src'
+                }
+              }]
+            ]
+          },
+        },
+      },
+      {
+        test: /\.css$/,
+        use: ['style-loader', 'css-loader'],
+      },
+    ],
+  },
+  plugins: [
+    new webpack.DefinePlugin({
+      'process.env': {
+        'NODE_ENV': JSON.stringify(process.env.NODE_ENV)
+      }
+    })
+  ]
+};

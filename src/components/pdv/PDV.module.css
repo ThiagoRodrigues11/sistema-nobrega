@@ -1,0 +1,263 @@
+/* PDV.module.css - Estilo base para o PDV */
+.pdvContainer {
+  padding: 24px;
+  background: #f8f9fa;
+  min-height: 100vh;
+}
+.pdvHeader {
+  background: #236166;
+  color: #fff;
+  border-radius: 12px;
+  padding: 20px 32px;
+  margin-bottom: 18px;
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+.pdvHeader h1 {
+  font-size: 2.2rem;
+  margin: 0;
+  font-weight: 700;
+  letter-spacing: 1px;
+  color: #fff;
+}
+.pdvGrid {
+  display: flex;
+  gap: 24px;
+}
+.produtosSection {
+  flex: 1.5;
+}
+.carrinhoSection {
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.08);
+  padding: 28px 24px;
+  min-width: 340px;
+  max-width: 420px;
+  margin-left: 24px;
+  font-family: 'Segoe UI', Arial, sans-serif;
+}
+.cardProdutos {
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 3px 12px rgba(0,0,0,0.07);
+  overflow: hidden;
+}
+.cardHeaderProdutos {
+  background: #236166;
+  color: #fff;
+  padding: 18px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.searchContainer {
+  display: flex;
+  align-items: center;
+  background: #fff;
+  border-radius: 8px;
+  padding: 4px 12px;
+  gap: 8px;
+}
+.searchContainer input {
+  border: none;
+  outline: none;
+  flex: 1;
+  font-size: 1rem;
+  background: transparent;
+  padding: 4px 0;
+}
+.cardBodyProdutos {
+  padding: 18px 24px;
+}
+.listaProdutos {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+}
+.produtoCard {
+  background: #f5f5f5;
+  border-radius: 8px;
+  box-shadow: 0 1px 5px rgba(0,0,0,0.04);
+  padding: 12px 16px;
+  min-width: 180px;
+  max-width: 220px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+.produtoImagem {
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+  border-radius: 6px;
+}
+.produtoInfo {
+  text-align: center;
+}
+.produtoInfo h6 {
+  margin: 0;
+  font-size: 1.1rem;
+  color: #236166;
+}
+.produtoInfo p {
+  margin: 0;
+  color: #666;
+  font-size: 0.98rem;
+}
+.produtoInfo button {
+  margin-top: 6px;
+  background: #236166;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  padding: 7px 18px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.produtoInfo button:hover {
+  background: #1b4c50;
+}
+.carrinhoContainer {
+  width: 100%;
+}
+.carrinhoHeader {
+  font-size: 1.2em;
+  font-weight: bold;
+  margin-bottom: 16px;
+  color: #1a3a3a;
+}
+.carrinhoBody {
+  max-height: 260px;
+  overflow-y: auto;
+}
+.carrinhoTable {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 16px;
+}
+.carrinhoTable th, .carrinhoTable td {
+  padding: 14px 10px;
+  font-size: 1.08em;
+}
+.carrinhoTable th {
+  background: #f4f8fa;
+  color: #1a3a3a;
+  font-weight: 600;
+}
+.carrinhoTable tr:last-child td {
+  border-bottom: none;
+}
+.carrinhoTable tr:nth-child(even) {
+  background: #f7fafc;
+}
+.carrinhoTable input[type="number"] {
+  width: 48px;
+  padding: 4px 6px;
+  border: 1px solid #b0b0b0;
+  border-radius: 4px;
+  font-size: 1em;
+}
+.btnRemover {
+  background: #ff4d4f;
+  color: #fff;
+  border: none;
+  border-radius: 50%;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.3em;
+  transition: background 0.2s, transform 0.1s;
+}
+.btnRemover:hover {
+  background: #d9363e;
+  transform: scale(1.1);
+}
+.carrinhoFooter {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 18px;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 18px;
+}
+.carrinhoFooter label {
+  font-weight: 500;
+  color: #1a3a3a;
+  margin-right: 6px;
+}
+.carrinhoFooter input[type="number"] {
+  width: 80px;
+  padding: 4px 8px;
+  border: 1px solid #b0b0b0;
+  border-radius: 4px;
+  font-size: 1em;
+}
+.carrinhoFooter select {
+  padding: 6px 10px;
+  border: 1px solid #b0b0b0;
+  border-radius: 4px;
+  font-size: 1em;
+}
+.carrinhoFooter span {
+  font-size: 1.1em;
+  font-weight: bold;
+  color: #1a3a3a;
+}
+.btnFinalizar {
+  width: 100%;
+  margin-top: 22px;
+  padding: 18px 0;
+  background: linear-gradient(90deg, #176d6d 60%, #1abc9c 100%);
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  font-size: 1.25em;
+  font-weight: bold;
+  cursor: pointer;
+  box-shadow: 0 4px 16px rgba(26,109,109,0.08);
+  letter-spacing: 1px;
+  transition: background 0.2s, box-shadow 0.2s, transform 0.1s;
+}
+.btnFinalizar:hover {
+  background: linear-gradient(90deg, #124f4f 60%, #16a085 100%);
+  box-shadow: 0 6px 24px rgba(26,109,109,0.13);
+  transform: translateY(-2px) scale(1.02);
+}
+@media (max-width: 900px) {
+  .carrinhoSection {
+    margin-left: 0;
+    margin-top: 24px;
+    min-width: unset;
+    max-width: 100%;
+  }
+}
+/* Modal */
+.modalOverlay {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0,0,0,0.25);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+}
+.modalContent {
+  background: #fff;
+  border-radius: 10px;
+  padding: 32px 24px;
+  min-width: 340px;
+  max-width: 540px;
+  box-shadow: 0 5px 30px rgba(0,0,0,0.15);
+}
+.modalActions {
+  margin-top: 20px;
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+}
