@@ -20,6 +20,15 @@ const authMiddleware = (req, res, next) => {
     }
 };
 
+// Rota de teste CORS
+router.get('/test-cors', (req, res) => {
+    res.header('Access-Control-Allow-Origin', '*');
+    res.header('Access-Control-Allow-Credentials', 'true');
+    res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+    res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization, X-Requested-With, Origin');
+    res.json({ message: 'CORS test successful' });
+});
+
 // Login
 router.post('/login', async (req, res) => {
     const { username, password } = req.body;
@@ -29,34 +38,27 @@ router.post('/login', async (req, res) => {
     }
 
     try {
-        const user = await Usuario.findOne({ 
-            where: { username },
-            attributes: ['id', 'username', 'password', 'nome', 'nivel_acesso', 'email']
+        const usuario = await Usuario.findOne({ where: { username } });
+        if (!usuario) {
+            return res.status(401).json({ message: 'Usuário ou senha inválidos' });
+        }
+
+        const isValidPassword = await bcrypt.compare(password, usuario.password);
+        if (!isValidPassword) {
+            return res.status(401).json({ message: 'Usuário ou senha inválidos' });
+        }
+
+        const token = jwt.sign({ id: usuario.id }, process.env.JWT_SECRET || 'your-secret-key', {
+            expiresIn: '24h'
         });
 
-        if (!user) {
-            return res.status(401).json({ message: 'Usuário não encontrado' });
-        }
-
-        const valid = await bcrypt.compare(password, user.password);
-        if (!valid) {
-            return res.status(401).json({ message: 'Senha incorreta' });
-        }
-
-        const token = jwt.sign(
-            { id: user.id },
-            process.env.JWT_SECRET || 'your-secret-key',
-            { expiresIn: '1d' }
-        );
-
-        // Não retornar a senha
-        const { password: _, ...userData } = user.toJSON();
-
-        req.session.user = userData;
-        
         res.json({
             token,
-            user: userData
+            user: {
+                id: usuario.id,
+                username: usuario.username,
+                email: usuario.email
+            }
         });
     } catch (error) {
         console.error('Erro no login:', error);
@@ -65,24 +67,25 @@ router.post('/login', async (req, res) => {
 });
 
 // Logout
-router.post('/logout', (req, res) => {
-    req.session.destroy(() => {
-        res.json({ message: 'Logout efetuado' });
-    });
+router.post('/logout', authMiddleware, (req, res) => {
+    res.json({ message: 'Logout realizado com sucesso' });
 });
 
-// Verificar usuário logado
+// Obter informações do usuário logado
 router.get('/me', authMiddleware, async (req, res) => {
     try {
-        const user = await Usuario.findByPk(req.userId, {
-            attributes: ['id', 'username', 'nome', 'nivel_acesso', 'email']
-        });
-
-        if (!user) {
+        const usuario = await Usuario.findByPk(req.userId);
+        if (!usuario) {
             return res.status(404).json({ message: 'Usuário não encontrado' });
         }
 
-        res.json(user);
+        res.json({
+            user: {
+                id: usuario.id,
+                username: usuario.username,
+                email: usuario.email
+            }
+        });
     } catch (error) {
         console.error('Erro ao buscar usuário:', error);
         res.status(500).json({ message: 'Erro interno do servidor' });
