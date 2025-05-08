@@ -1,6 +1,6 @@
 # Guia de Deploy no Render
 
-Este guia contém instruções detalhadas para corrigir problemas comuns ao implantar o Sistema Nobrega no Render, incluindo erros de CORS e manifesto.
+Este guia contém instruções detalhadas para implantar o Sistema Nobrega no Render, incluindo as melhorias de configuração CORS e de manifesto.
 
 ## 1. Preparação para o Deploy
 
@@ -8,10 +8,10 @@ Execute o script automatizado para preparar o deploy:
 
 ```bash
 # Tornar o script executável (em sistemas Unix/Linux/MacOS)
-chmod +x deploy.sh
+chmod +x render-build.sh
 
 # Executar o script
-./deploy.sh
+./render-build.sh
 ```
 
 Ou siga os passos manuais:
@@ -31,7 +31,7 @@ Ou siga os passos manuais:
 ### Opção 1: Configuração via Dashboard
 
 1. No dashboard do Render, crie um novo Web Service:
-   - **Build Command**: `npm install && npm run build`
+   - **Build Command**: `./render-build.sh`
    - **Start Command**: `npx serve -s build`
 
 2. Configure as variáveis de ambiente:
@@ -77,25 +77,38 @@ Ou siga os passos manuais:
 
 ## 3. Verificação e Solução de Problemas
 
+### Teste Automatizado de CORS
+
+Execute o script de teste CORS para verificar se as configurações estão funcionando corretamente:
+
+```bash
+# Instalar as dependências (necessário apenas uma vez)
+npm install
+
+# Executar o teste (substitua a URL se necessário)
+node scripts/test-cors.js https://sistema-nobrega-1.onrender.com
+```
+
+Este script verificará a configuração CORS para vários endpoints e origens, ajudando a diagnosticar problemas.
+
+### Logs da Aplicação
+
+O sistema agora usa logs estruturados para facilitar a depuração. Verifique o console do navegador para ver logs formatados em desenvolvimento, ou os logs do Render em produção.
+
+Os logs incluem:
+- Níveis de severidade (debug, info, warn, error)
+- Timestamp
+- Módulo/componente
+- Mensagem
+- Dados estruturados
+
 ### Erro de CORS
 
 Se ainda houver erros de CORS:
 
 1. Verifique se o backend está configurado corretamente:
-   - Certifique-se de que o arquivo `backend/server.js` tenha a configuração CORS adaptada:
-     ```javascript
-     // Em backend/server.js
-     const isProd = process.env.NODE_ENV === 'production';
-     app.use((req, res, next) => {
-         // Em produção, aceita qualquer origem
-         if (isProd) {
-             res.header('Access-Control-Allow-Origin', req.headers.origin || '*');
-         } else if (origin === 'https://vestalize.com' || origin === 'http://vestalize.com' || origin === 'http://localhost:3000') {
-             res.header('Access-Control-Allow-Origin', origin);
-         }
-         // Resto da configuração
-     });
-     ```
+   - Certifique-se de que o arquivo `backend/server.js` tenha a configuração CORS atualizada
+   - Verifique se o arquivo `config.js` está com as origens corretas configuradas
 
 2. Teste a API manualmente no console do navegador:
    ```javascript
@@ -117,7 +130,7 @@ Se houver erro no manifesto:
 2. Certifique-se de que o arquivo está sendo servido pelo Render.
 3. Verifique se o arquivo `public/index.html` está referenciando o manifesto corretamente:
    ```html
-   <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
+   <link rel="manifest" href="%PUBLIC_URL%/manifest.json" crossorigin="use-credentials" />
    ```
 
 ### Outros Problemas
@@ -132,8 +145,26 @@ Se houver erro no manifesto:
    localStorage.clear()
    ```
 
-## 4. Monitoramento
+## 4. Estrutura do Projeto Melhorada
+
+O projeto foi refatorado para melhorar a organização e manutenibilidade:
+
+### Arquivos de Configuração Centralizados
+
+- `src/config.js`: Configurações centralizadas baseadas em ambiente
+- `backend/server.js`: Configuração CORS simplificada e unificada
+
+### Sistema de Logs Estruturados
+
+- `src/utils/logger.js`: Sistema de logs estruturados com diferentes níveis
+- Logs coloridos em desenvolvimento e formatados para produção
+
+### Scripts de Teste
+
+- `scripts/test-cors.js`: Ferramenta para testar configurações CORS
+
+## 5. Monitoramento
 
 1. Após o deploy, monitore os logs no painel do Render para identificar possíveis erros.
-2. Use o console do navegador para verificar se há erros de JavaScript ou rede.
+2. Use o console do navegador para verificar os logs estruturados.
 3. Teste o login e outras funcionalidades críticas após o deploy. 

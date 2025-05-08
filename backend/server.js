@@ -18,65 +18,37 @@ console.log('JWT_SECRET:', process.env.JWT_SECRET);
 const isProd = process.env.NODE_ENV === 'production';
 console.log('Ambiente:', isProd ? 'Produção' : 'Desenvolvimento');
 
-// Rota de teste CORS
+// Inicialização do Express
 const app = express();
-app.get('/test-cors', (req, res) => {
-    res.header('Access-Control-Allow-Origin', req.headers.origin || '*');
-    res.header('Access-Control-Allow-Credentials', 'true');
-    res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
-    res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization, X-Requested-With, Origin');
-    res.header('Access-Control-Max-Age', '86400');
-    res.json({ message: 'CORS test successful', origin: req.headers.origin, environment: isProd ? 'production' : 'development' });
-});
 
-// Configuração do CORS
-const corsOptions = {
-    origin: isProd 
-        ? '*' 
-        : ['https://vestalize.com', 'http://vestalize.com', 'http://localhost:3000'],
-    credentials: true,
-    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-    allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With', 'Origin'],
-    exposedHeaders: ['Authorization'],
-    preflightContinue: false,
-    optionsSuccessStatus: 204,
-    maxAge: 86400
+// Configuração unificada do CORS
+const corsConfig = {
+  origin: isProd 
+      ? '*' 
+      : ['https://vestalize.com', 'http://vestalize.com', 'http://localhost:3000'],
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With', 'Origin'],
+  exposedHeaders: ['Authorization'],
+  preflightContinue: false,
+  optionsSuccessStatus: 204,
+  maxAge: 86400
 };
 
-// Middleware para CORS
-app.use((req, res, next) => {
-    // Define a origem permitida
-    const origin = req.headers.origin;
-    
-    // Em produção, aceita qualquer origem
-    if (isProd) {
-        res.header('Access-Control-Allow-Origin', origin || '*');
-    } else if (origin === 'https://vestalize.com' || origin === 'http://vestalize.com' || origin === 'http://localhost:3000') {
-        res.header('Access-Control-Allow-Origin', origin);
-    }
-    
-    // Configura as credenciais
-    res.header('Access-Control-Allow-Credentials', 'true');
-    
-    // Configura os métodos permitidos
-    res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
-    
-    // Configura os headers permitidos
-    res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization, X-Requested-With, Origin');
-    
-    // Configura os headers expostos
-    res.header('Access-Control-Expose-Headers', 'Authorization');
-    
-    // Se for uma requisição OPTIONS (preflight), responde com 200
-    if (req.method === 'OPTIONS') {
-        res.header('Access-Control-Max-Age', '86400');
-        return res.status(200).end();
-    }
-    next();
-});
+// Aplicação do middleware CORS unificado
+app.use(cors(corsConfig));
 
-// Configuração do CORS com cors
-app.use(cors(corsOptions));
+// Middleware para lidar com preflight requests
+app.options('*', cors(corsConfig));
+
+// Rota de teste CORS
+app.get('/test-cors', (req, res) => {
+    res.json({ 
+        message: 'CORS test successful', 
+        origin: req.headers.origin, 
+        environment: isProd ? 'production' : 'development' 
+    });
+});
 
 // Configuração do Sequelize com base no ambiente
 const env = process.env.NODE_ENV || 'development';
