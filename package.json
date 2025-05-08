@@ -12,12 +12,15 @@
     "@testing-library/user-event": "^13.5.0",
     "axios": "^1.9.0",
     "babel-loader": "^10.0.0",
+    "babel-plugin-module-resolver": "^4.1.0",
     "css-loader": "^7.1.2",
     "nobrega-confeccoes": "file:",
+    "path-browserify": "^1.0.1",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
     "react-router-dom": "^7.5.1",
     "react-scripts": "5.0.1",
+    "serve": "^14.2.0",
     "style-loader": "^4.0.0",
     "web-vitals": "^2.1.4",
     "webpack": "^5.99.8",
@@ -26,10 +29,9 @@
   },
   "scripts": {
     "start": "webpack serve --mode development",
-    "build": "npm install webpack-cli && webpack --mode production",
+    "build": "webpack --mode production",
     "test": "react-scripts test",
-    "eject": "react-scripts eject",
-    "postinstall": "npm install --no-save webpack-cli"
+    "eject": "react-scripts eject"
   },
   "proxy": "https://sistema-nobrega-1.onrender.com/api",
   "devServer": {
@@ -52,11 +54,6 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
-  },
-  "devDependencies": {
-    "babel-plugin-module-resolver": "^4.1.0",
-    "path-browserify": "^1.0.1",
-    "serve": "^14.2.0"
   },
   "engines": {
     "node": ">=16"

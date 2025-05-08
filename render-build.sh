@@ -1,13 +1,22 @@
 #!/usr/bin/env bash
-# Render build script for React apps
+# Script de build para o Render
 
-echo "Installing dependencies..."
-npm install
+# Limpar cache do npm para evitar problemas
+echo "Limpando cache do npm..."
+npm cache clean --force
 
-echo "Installing webpack-cli..."
-npm install --no-save webpack-cli
+# Instalar dependências
+echo "Instalando dependências..."
+npm ci || npm install
 
-echo "Building application..."
+# Verificar se o webpack-cli está instalado
+if ! npm list webpack-cli >/dev/null 2>&1; then
+  echo "Instalando webpack-cli..."
+  npm install webpack-cli
+fi
+
+# Executar o build
+echo "Construindo a aplicação..."
 npm run build
 
-echo "Build completed!" 
+echo "Build completado com sucesso!" 
