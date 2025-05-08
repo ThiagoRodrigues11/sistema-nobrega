@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { getPostById, deletePost } from '@api/posts';
+import { getPostById, deletePost } from '@/api/posts';
 import CommentForm from './CommentForm';
 import CommentThread from './CommentThread';
 import { useParams, useNavigate } from 'react-router-dom';
