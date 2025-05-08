@@ -1,47 +1,36 @@
-const API_URL = 'http://localhost:5000/api';
+import { get, post, put, del } from './api';
 
 export async function getCategoriasProduto() {
-  const res = await fetch(`${API_URL}/categorias-produto`);
-  if (!res.ok) throw new Error('Erro ao buscar categorias de produto');
-  return await res.json();
+  try {
+    const response = await get('/categorias-produto');
+    return response;
+  } catch (error) {
+    throw new Error('Erro ao buscar categorias de produto');
+  }
 }
 
 export async function createCategoriaProduto(categoria) {
-  const token = localStorage.getItem('token');
-  const res = await fetch(`${API_URL}/categorias-produto`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      'Authorization': token ? `Bearer ${token}` : ''
-    },
-    body: JSON.stringify(categoria)
-  });
-  if (!res.ok) throw new Error('Erro ao criar categoria de produto');
-  return await res.json();
+  try {
+    const response = await post('/categorias-produto', categoria);
+    return response;
+  } catch (error) {
+    throw new Error('Erro ao criar categoria de produto');
+  }
 }
 
 export async function updateCategoriaProduto(id, categoria) {
-  const token = localStorage.getItem('token');
-  const res = await fetch(`${API_URL}/categorias-produto/${id}`, {
-    method: 'PUT',
-    headers: {
-      'Content-Type': 'application/json',
-      'Authorization': token ? `Bearer ${token}` : ''
-    },
-    body: JSON.stringify(categoria)
-  });
-  if (!res.ok) throw new Error('Erro ao atualizar categoria de produto');
-  return await res.json();
+  try {
+    const response = await put(`/categorias-produto/${id}`, categoria);
+    return response;
+  } catch (error) {
+    throw new Error('Erro ao atualizar categoria de produto');
+  }
 }
 
 export async function deleteCategoriaProduto(id) {
-  const token = localStorage.getItem('token');
-  const res = await fetch(`${API_URL}/categorias-produto/${id}`, {
-    method: 'DELETE',
-    headers: {
-      'Authorization': token ? `Bearer ${token}` : ''
-    }
-  });
-  if (!res.ok) throw new Error('Erro ao deletar categoria de produto');
-  return await res.json();
+  try {
+    await del(`/categorias-produto/${id}`);
+  } catch (error) {
+    throw new Error('Erro ao deletar categoria de produto');
+  }
 }

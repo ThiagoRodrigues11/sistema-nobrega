@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { getPosts } from '../../api/posts';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import styles from './PostsList.module.css';
 
 const resumo = (conteudo) => {

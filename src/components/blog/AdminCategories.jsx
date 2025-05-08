@@ -1,55 +1,72 @@
-import React, { useEffect, useState } from 'react';
-import axios from 'axios';
+import React, { useState, useEffect } from 'react';
+import { get, post, put, del } from '../api/api';
 
-// Componente de gerenciamento de categorias (apenas para admins)
 const AdminCategories = () => {
   const [categorias, setCategorias] = useState([]);
   const [novaCategoria, setNovaCategoria] = useState('');
-  const [editando, setEditando] = useState(null);
   const [editNome, setEditNome] = useState('');
+  const [editId, setEditId] = useState(null);
   const [msg, setMsg] = useState('');
 
-  // Busca categorias
   useEffect(() => {
-    axios.get(`${process.env.REACT_APP_API_URL || 'http://localhost:5000/api'}/categorias`)
-      .then(res => setCategorias(res.data))
-      .catch(() => setCategorias([]));
+    loadCategories();
   }, []);
 
-  // Adiciona categoria
-  const adicionar = async () => {
-    if (!novaCategoria.trim()) return;
+  const loadCategories = async () => {
     try {
-      const res = await axios.post(`${process.env.REACT_APP_API_URL || 'http://localhost:5000/api'}/categorias`, { nome: novaCategoria });
-      setCategorias([...categorias, res.data]);
+      const response = await get('/categorias');
+      setCategorias(response.data);
+    } catch (error) {
+      console.error('Erro ao carregar categorias:', error);
+    }
+  };
+
+  const handleAddCategory = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await post('/categorias', { nome: novaCategoria });
+      setCategorias([...categorias, response.data]);
       setNovaCategoria('');
       setMsg('Categoria criada!');
-    } catch (err) {
+    } catch (error) {
+      console.error('Erro ao adicionar categoria:', error);
       setMsg('Erro ao criar categoria');
     }
   };
 
-  // Editar categoria
-  const salvarEdicao = async (id) => {
+  const handleEditCategory = async (id, nome) => {
+    setEditNome(nome);
+    setEditId(id);
+  };
+
+  const handleUpdateCategory = async (e) => {
+    e.preventDefault();
     try {
-      await axios.put(`${process.env.REACT_APP_API_URL || 'http://localhost:5000/api'}/categorias/${id}`, { nome: editNome });
-      setCategorias(categorias.map(cat => cat._id === id ? { ...cat, nome: editNome } : cat));
-      setEditando(null);
+      await put(`/categorias/${editId}`, { nome: editNome });
+      const updatedCategorias = categorias.map(cat => 
+        cat._id === editId ? { ...cat, nome: editNome } : cat
+      );
+      setCategorias(updatedCategorias);
+      setEditId(null);
+      setEditNome('');
       setMsg('Categoria editada!');
-    } catch {
+    } catch (error) {
+      console.error('Erro ao atualizar categoria:', error);
       setMsg('Erro ao editar');
     }
   };
 
-  // Excluir categoria
-  const excluir = async (id) => {
-    if (!window.confirm('Excluir categoria?')) return;
-    try {
-      await axios.delete(`${process.env.REACT_APP_API_URL || 'http://localhost:5000/api'}/categorias/${id}`);
-      setCategorias(categorias.filter(cat => cat._id !== id));
-      setMsg('Categoria excluída!');
-    } catch {
-      setMsg('Erro ao excluir');
+  const handleDeleteCategory = async (id) => {
+    if (window.confirm('Tem certeza que deseja excluir esta categoria?')) {
+      try {
+        await del(`/categorias/${id}`);
+        const updatedCategorias = categorias.filter(cat => cat._id !== id);
+        setCategorias(updatedCategorias);
+        setMsg('Categoria excluída!');
+      } catch (error) {
+        console.error('Erro ao excluir categoria:', error);
+        setMsg('Erro ao excluir');
+      }
     }
   };
 
@@ -59,22 +76,22 @@ const AdminCategories = () => {
       {msg && <div style={{color:'#6c63ff',marginBottom:10}}>{msg}</div>}
       <div style={{display:'flex',gap:8,marginBottom:20}}>
         <input value={novaCategoria} onChange={e=>setNovaCategoria(e.target.value)} placeholder="Nova categoria" style={{flex:1,padding:8}} />
-        <button onClick={adicionar} style={{padding:'8px 16px',background:'#6c63ff',color:'#fff',border:'none',borderRadius:6}}>Adicionar</button>
+        <button onClick={handleAddCategory} style={{padding:'8px 16px',background:'#6c63ff',color:'#fff',border:'none',borderRadius:6}}>Adicionar</button>
       </div>
       <ul style={{listStyle:'none',padding:0}}>
         {categorias.map(cat => (
           <li key={cat._id} style={{display:'flex',alignItems:'center',gap:8,marginBottom:10}}>
-            {editando===cat._id ? (
-              <>
+            {editId===cat._id ? (
+              <form onSubmit={handleUpdateCategory}>
                 <input value={editNome} onChange={e=>setEditNome(e.target.value)} style={{flex:1,padding:6}} />
-                <button onClick={()=>salvarEdicao(cat._id)} style={{padding:'6px 14px',background:'#6c63ff',color:'#fff',border:'none',borderRadius:5}}>Salvar</button>
-                <button onClick={()=>{setEditando(null);setEditNome('')}} style={{padding:'6px 10px'}}>Cancelar</button>
-              </>
+                <button type="submit" style={{padding:'6px 14px',background:'#6c63ff',color:'#fff',border:'none',borderRadius:5}}>Salvar</button>
+                <button onClick={() => { setEditId(null); setEditNome(''); }} style={{padding:'6px 10px'}}>Cancelar</button>
+              </form>
             ) : (
               <>
                 <span style={{flex:1}}>{cat.nome}</span>
-                <button onClick={()=>{setEditando(cat._id);setEditNome(cat.nome);}} style={{padding:'6px 14px'}}>Editar</button>
-                <button onClick={()=>excluir(cat._id)} style={{padding:'6px 10px',color:'#e63946'}}>Excluir</button>
+                <button onClick={() => handleEditCategory(cat._id, cat.nome)} style={{padding:'6px 14px'}}>Editar</button>
+                <button onClick={() => handleDeleteCategory(cat._id)} style={{padding:'6px 10px',color:'#e63946'}}>Excluir</button>
               </>
             )}
           </li>

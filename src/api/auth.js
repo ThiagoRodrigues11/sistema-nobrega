@@ -1,55 +1,42 @@
-const API_URL = 'http://localhost:5000/api';
+import { post, get, del } from './api';
 
-export default {
+const authApi = {
   login: async (username, password) => {
-    const response = await fetch(`${API_URL}/auth/login`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ username, password })
-    });
-    const data = await response.json();
-    if (data.token) {
-      localStorage.setItem('token', data.token);
-      if (data.user) localStorage.setItem('user', JSON.stringify(data.user));
+    try {
+      const data = await post('/auth/login', { username, password });
+      if (data.token) {
+        localStorage.setItem('token', data.token);
+        if (data.user) localStorage.setItem('user', JSON.stringify(data.user));
+      }
+      return data;
+    } catch (error) {
+      throw new Error('Erro ao fazer login');
     }
-    return data;
   },
   logout: async () => {
-    await fetch(`${API_URL}/auth/logout`, {
-      method: 'POST',
-      headers: {
-        'Authorization': localStorage.getItem('token') ? `Bearer ${localStorage.getItem('token')}` : ''
-      }
-    });
-    localStorage.removeItem('token');
+    try {
+      await del('/auth/logout');
+      localStorage.removeItem('token');
+    } catch (error) {
+      console.error('Erro ao fazer logout:', error);
+    }
   },
-  // Busca o usuário autenticado pelo token
   getMe: async () => {
-    const token = localStorage.getItem('token');
-    const response = await fetch(`${API_URL}/auth/me`, {
-      method: 'GET',
-      headers: {
-        'Authorization': token ? `Bearer ${token}` : '',
-        'Content-Type': 'application/json'
-      }
-    });
-    if (!response.ok) throw new Error('Não autenticado');
-    return await response.json();
+    try {
+      const response = await get('/auth/me');
+      return response;
+    } catch (error) {
+      throw new Error('Não autenticado');
+    }
   },
   createUser: async (data) => {
-    const token = localStorage.getItem('token');
-    const response = await fetch(`${API_URL}/usuarios`, {
-      method: 'POST',
-      headers: {
-        'Authorization': token ? `Bearer ${token}` : '',
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(data)
-    });
-    const result = await response.json();
-    if (!response.ok) {
-      throw { response: { data: result } };
+    try {
+      const result = await post('/usuarios', data);
+      return result;
+    } catch (error) {
+      throw error;
     }
-    return result;
   }
 };
+
+export default authApi;

@@ -1,52 +1,36 @@
-const API_URL = 'http://localhost:5000/api';
+import { get, post, put, del } from './api';
 
 export async function getUsuarios() {
-  const token = localStorage.getItem('token');
-  const res = await fetch(`${API_URL}/usuarios`, {
-    headers: {
-      'Authorization': token ? `Bearer ${token}` : ''
-    }
-  });
-  if (!res.ok) throw new Error('Erro ao buscar usuários');
-  return await res.json();
+  try {
+    const response = await get('/usuarios');
+    return response;
+  } catch (error) {
+    throw new Error('Erro ao buscar usuários');
+  }
 }
 
 export async function createUsuario(usuario) {
-  const token = localStorage.getItem('token');
-  const res = await fetch(`${API_URL}/usuarios`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      'Authorization': token ? `Bearer ${token}` : ''
-    },
-    body: JSON.stringify(usuario)
-  });
-  if (!res.ok) throw new Error('Erro ao criar usuário');
-  return await res.json();
+  try {
+    const response = await post('/usuarios', usuario);
+    return response;
+  } catch (error) {
+    throw new Error('Erro ao criar usuário');
+  }
 }
 
 export async function updateUsuario(id, usuario) {
-  const token = localStorage.getItem('token');
-  const res = await fetch(`${API_URL}/usuarios/${id}`, {
-    method: 'PUT',
-    headers: {
-      'Content-Type': 'application/json',
-      'Authorization': token ? `Bearer ${token}` : ''
-    },
-    body: JSON.stringify(usuario)
-  });
-  if (!res.ok) throw new Error('Erro ao atualizar usuário');
-  return await res.json();
+  try {
+    const response = await put(`/usuarios/${id}`, usuario);
+    return response;
+  } catch (error) {
+    throw new Error('Erro ao atualizar usuário');
+  }
 }
 
 export async function deleteUsuario(id) {
-  const token = localStorage.getItem('token');
-  const res = await fetch(`${API_URL}/usuarios/${id}`, {
-    method: 'DELETE',
-    headers: {
-      'Authorization': token ? `Bearer ${token}` : ''
-    }
-  });
-  if (!res.ok) throw new Error('Erro ao deletar usuário');
-  return await res.json();
+  try {
+    await del(`/usuarios/${id}`);
+  } catch (error) {
+    throw new Error('Erro ao deletar usuário');
+  }
 }

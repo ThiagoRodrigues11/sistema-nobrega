@@ -1,21 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import { get, post } from '../api/api';
 import PersonalizationModal from '../components/pdv/PersonalizationModal';
 import styles from '../components/pdv/PDV.module.css';
-
-const API_URL = 'http://localhost:5000/api';
-
-// Configurar o axios com a URL base e headers padrão
-axios.defaults.baseURL = 'http://localhost:5000';
-axios.interceptors.request.use(config => {
-  const token = localStorage.getItem('token');
-  if (token) {
-    config.headers.Authorization = `Bearer ${token}`;
-  }
-  return config;
-});
-
-console.log('PDV.jsx FOI RENDERIZADO');
+import { useNavigate } from 'react-router-dom';
 
 const PDV = () => {
   const [produtos, setProdutos] = useState([]);
@@ -25,18 +12,19 @@ const PDV = () => {
   const [produtoPersonalizar, setProdutoPersonalizar] = useState(null);
   const [desconto, setDesconto] = useState(0);
   const [pagamento, setPagamento] = useState('dinheiro');
+  const navigate = useNavigate();
 
   useEffect(() => {
     console.log('useEffect do PDV rodou');
-    axios.get('/api/produtos')
-      .then(res => {
-        console.log('Resposta do backend no PDV:', res.data);
-        if (Array.isArray(res.data)) {
-          console.log('Produtos recebidos no PDV:', res.data);
-          setProdutos(res.data);
-        } else if (res.data && Array.isArray(res.data.produtos)) {
-          console.log('Produtos recebidos no PDV:', res.data.produtos);
-          setProdutos(res.data.produtos);
+    get('/produtos')
+      .then(response => {
+        console.log('Resposta do backend no PDV:', response.data);
+        if (Array.isArray(response.data)) {
+          console.log('Produtos recebidos no PDV:', response.data);
+          setProdutos(response.data);
+        } else if (response.data && Array.isArray(response.data.produtos)) {
+          console.log('Produtos recebidos no PDV:', response.data.produtos);
+          setProdutos(response.data.produtos);
         } else {
           setProdutos([]);
         }
@@ -103,22 +91,20 @@ const PDV = () => {
     
     // Formatar os itens do carrinho para o formato esperado pelo backend
     const itensFormatados = carrinho.map(item => ({
-      produto_id: item.id,
+      produtoId: item.id,
       quantidade: item.qtd,
-      preco_unitario: item.preco,
+      precoUnitario: item.preco,
       subtotal: item.preco * item.qtd
     }));
 
-    axios.post('/api/vendas', {
+    post('/vendas', {
       itens: itensFormatados,
       desconto: Number(desconto),
-      forma_pagamento: pagamento,
+      formaPagamento: pagamento,
       total: calcularTotal(),
       status: 'concluida'
     }).then(() => {
-      alert('Venda finalizada!');
-      setCarrinho([]);
-      setDesconto(0);
+      navigate('/vendas');
     }).catch((error) => {
       console.error('Erro ao finalizar venda:', error);
       alert('Erro ao finalizar venda. Verifique o console para mais detalhes.');

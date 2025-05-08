@@ -1,47 +1,36 @@
-const API_URL = 'http://localhost:5000/api';
+import { get, post, put, del } from '../api';
 
 export async function getCategorias() {
-  const res = await fetch(`${API_URL}/categorias`);
-  if (!res.ok) throw new Error('Erro ao buscar categorias');
-  return await res.json();
+  try {
+    const response = await get('/categorias');
+    return response;
+  } catch (error) {
+    throw new Error('Erro ao buscar categorias');
+  }
 }
 
-export async function createCategoria(categoria) {
-  const token = localStorage.getItem('token');
-  const res = await fetch(`${API_URL}/categorias`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      'Authorization': token ? `Bearer ${token}` : ''
-    },
-    body: JSON.stringify(categoria)
-  });
-  if (!res.ok) throw new Error('Erro ao criar categoria');
-  return await res.json();
+export async function addCategoria(nome) {
+  try {
+    const response = await post('/categorias', { nome });
+    return response;
+  } catch (error) {
+    throw new Error('Erro ao adicionar categoria');
+  }
 }
 
-export async function updateCategoria(id, categoria) {
-  const token = localStorage.getItem('token');
-  const res = await fetch(`${API_URL}/categorias/${id}`, {
-    method: 'PUT',
-    headers: {
-      'Content-Type': 'application/json',
-      'Authorization': token ? `Bearer ${token}` : ''
-    },
-    body: JSON.stringify(categoria)
-  });
-  if (!res.ok) throw new Error('Erro ao atualizar categoria');
-  return await res.json();
+export async function updateCategoria(id, nome) {
+  try {
+    const response = await put(`/categorias/${id}`, { nome });
+    return response;
+  } catch (error) {
+    throw new Error('Erro ao atualizar categoria');
+  }
 }
 
 export async function deleteCategoria(id) {
-  const token = localStorage.getItem('token');
-  const res = await fetch(`${API_URL}/categorias/${id}`, {
-    method: 'DELETE',
-    headers: {
-      'Authorization': token ? `Bearer ${token}` : ''
-    }
-  });
-  if (!res.ok) throw new Error('Erro ao deletar categoria');
-  return await res.json();
+  try {
+    await del(`/categorias/${id}`);
+  } catch (error) {
+    throw new Error('Erro ao deletar categoria');
+  }
 }

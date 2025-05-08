@@ -32,7 +32,7 @@ const PostDetail = () => {
   const getYoutubeId = (url) => {
     if (!url) return null;
     const match = url.match(
-      /(?:youtube(?:-nocookie)?\.com\/(?:[^\/\n\s]+\/\S+\/|(?:v|e(?:mbed)?|shorts)\/|\S*?[?&]v=)|youtu\.be\/)([\w-]{11})/
+      /(?:youtube(?:-nocookie)?.com\/(?:[^\/\n\s]+\/\S+\/|(?:v|e(?:mbed)?|shorts)\/|\S*?[?&]v=)|youtu\.be\/)([\w-]{11})/
     );
     return match ? match[1] : null;
   };
