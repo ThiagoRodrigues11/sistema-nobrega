@@ -1,24 +1,24 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import { AuthProvider } from './components/auth/AuthProvider';
-import Layout from './components/ui/Layout';
-import LoginPage from './pages/Auth/LoginPage';
-import PostsList from './components/blog/PostsList';
-import PostDetail from './components/blog/PostDetail';
-import PostForm from './components/blog/PostForm';
-import PDV from './pages/PDV';
-import PrivateRoute from './components/auth/PrivateRoute';
-import Dashboard from './pages/Admin/Dashboard';
-import ProdutosAdmin from './pages/Admin/ProdutosAdmin';
-import CategoriasAdmin from './pages/Admin/CategoriasAdmin';
-import CategoriasProdutosAdmin from './pages/Admin/CategoriasProdutosAdmin';
-import AdminCategories from './components/blog/AdminCategories';
-import PrivateAdminRoute from './components/blog/PrivateAdminRoute';
-import UserCreate from './components/auth/UserCreate';
-import UsersList from './components/auth/UsersList';
-import UserEdit from './components/auth/UserEdit';
-import UsuariosAdmin from './pages/Admin/UsuariosAdmin';
-import RelatoriosAdmin from './pages/Admin/RelatoriosAdmin';
-import RequireAuthOrLogin from './RequireAuthOrLogin';
+import { AuthProvider } from '@/components/auth/AuthProvider';
+import Layout from '@/components/ui/Layout';
+import LoginPage from '@/pages/Auth/LoginPage';
+import PostsList from '@/components/blog/PostsList';
+import PostDetail from '@/components/blog/PostDetail';
+import PostForm from '@/components/blog/PostForm';
+import PDV from '@/pages/PDV';
+import PrivateRoute from '@/components/auth/PrivateRoute';
+import Dashboard from '@/pages/Admin/Dashboard';
+import ProdutosAdmin from '@/pages/Admin/ProdutosAdmin';
+import CategoriasAdmin from '@/pages/Admin/CategoriasAdmin';
+import CategoriasProdutosAdmin from '@/pages/Admin/CategoriasProdutosAdmin';
+import AdminCategories from '@/components/blog/AdminCategories';
+import PrivateAdminRoute from '@/components/blog/PrivateAdminRoute';
+import UserCreate from '@/components/auth/UserCreate';
+import UsersList from '@/components/auth/UsersList';
+import UserEdit from '@/components/auth/UserEdit';
+import UsuariosAdmin from '@/pages/Admin/UsuariosAdmin';
+import RelatoriosAdmin from '@/pages/Admin/RelatoriosAdmin';
+import RequireAuthOrLogin from '@/RequireAuthOrLogin';
 
 function App() {
   return (
