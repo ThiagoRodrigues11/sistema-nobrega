@@ -37,15 +37,16 @@
   },
   "scripts": {
     "prebuild": "npm install -D webpack-cli",
-    "start": "webpack serve --mode development --port 10000",
+    "start": "webpack serve --mode development --port 10000 --host 0.0.0.0 --disable-host-check",
     "build": "webpack --mode production",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
   "proxy": "https://sistema-nobrega-1.onrender.com/api",
   "devServer": {
-    "allowedHosts": "all",
+    "host": "0.0.0.0",
     "port": 10000,
+    "allowedHosts": "all",
     "disableHostCheck": true,
     "headers": {
       "Access-Control-Allow-Origin": "*"
