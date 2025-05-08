@@ -4,13 +4,35 @@ import session from 'express-session';
 import dotenv from 'dotenv';
 import multer from 'multer';
 import path from 'path';
-import { sequelize } from './src/models/index.js';
+import { Sequelize } from 'sequelize';
 import './src/models/associations.js';
 import routes from './src/routes/index.js';
+import { fileURLToPath } from 'url';
+import config from './config/database.js';
+
 // Importe outros models conforme necessário
 
+// Configuração do ambiente
 dotenv.config();
 console.log('JWT_SECRET:', process.env.JWT_SECRET);
+
+// Configuração do Sequelize com base no ambiente
+const env = process.env.NODE_ENV || 'development';
+const dbConfig = config[env];
+
+// Inicialização do Sequelize
+const sequelize = new Sequelize(
+    dbConfig.database,
+    dbConfig.username,
+    dbConfig.password,
+    {
+        host: dbConfig.host,
+        port: dbConfig.port,
+        dialect: 'mysql',
+        logging: false,
+        define: { timestamps: false }
+    }
+);
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -46,6 +68,14 @@ app.use('/uploads', express.static('uploads'));
 
 // Routes
 app.use('/api', routes);
+
+// Servir arquivos estáticos do React
+app.use(express.static(path.join(__dirname, '../build')));
+
+// Rota catch-all para o React Router
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, '../build', 'index.html'));
+});
 
 // Database connection and server start
 const startServer = async () => {

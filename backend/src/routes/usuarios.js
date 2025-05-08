@@ -9,21 +9,27 @@ const router = Router();
 function isAdmin(req, res, next) {
   // Tenta pegar o token do header Authorization
   const authHeader = req.headers.authorization;
+  console.log('DEBUG isAdmin - Authorization header:', authHeader);
   if (!authHeader || !authHeader.startsWith('Bearer ')) {
+    console.log('DEBUG isAdmin - Token não fornecido');
     return res.status(401).json({ message: 'Token não fornecido' });
   }
   const token = authHeader.split(' ')[1];
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    console.log('DEBUG isAdmin - Token decodificado:', decoded);
     // Busca o usuário pelo id do token
-    Usuario.findById(decoded.id).then(user => {
+    Usuario.findByPk(decoded.id).then(user => {
+      console.log('DEBUG isAdmin - Usuário encontrado:', user);
       if (!user || !(user.role === 'admin' || user.isAdmin || user.nivel_acesso === 'admin')) {
+        console.log('DEBUG isAdmin - Acesso negado. user:', user);
         return res.status(403).json({ message: 'Acesso negado. Apenas admins.' });
       }
       req.user = user;
       next();
     });
   } catch (err) {
+    console.log('DEBUG isAdmin - Token inválido ou expirado:', err);
     return res.status(401).json({ message: 'Token inválido ou expirado' });
   }
 }
@@ -41,6 +47,7 @@ router.get('/', isAdmin, async (req, res) => {
 // Criar usuário (apenas admin)
 router.post('/', isAdmin, async (req, res) => {
   try {
+    console.log('DEBUG POST /usuarios - Body recebido:', req.body);
     console.log('POST /usuarios chamado');
     console.log('Body recebido:', req.body);
     const { nome, email, senha, role, username } = req.body;
@@ -48,7 +55,7 @@ router.post('/', isAdmin, async (req, res) => {
       console.log('Faltando campos obrigatórios');
       return res.status(400).json({ message: 'Nome, email e senha são obrigatórios.' });
     }
-    const existe = await Usuario.findOne({ email });
+    const existe = await Usuario.findOne({ where: { email } });
     if (existe) {
       console.log('Email já cadastrado:', email);
       return res.status(409).json({ message: 'Email já cadastrado.' });
