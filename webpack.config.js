@@ -1,5 +1,6 @@
 const webpack = require('webpack');
 const path = require('path');
+const cors = require('cors');
 
 module.exports = {
   entry: './src/index.js',
@@ -23,18 +24,34 @@ module.exports = {
       directory: path.join(__dirname, 'public'),
     },
     compress: true,
-    port: 3000,
+    port: 10000,
     host: '0.0.0.0',
     proxy: {
       '/api': {
         target: 'https://sistema-nobrega-1.onrender.com/api',
         changeOrigin: true,
+        secure: false,
+        headers: {
+          'Access-Control-Allow-Origin': '*',
+          'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
+          'Access-Control-Allow-Headers': 'Content-Type, Authorization'
+        }
       },
     },
     setupMiddlewares: (middlewares, devServer) => {
       if (!devServer) {
         throw new Error('webpack-dev-server is not defined');
       }
+      
+      // Adicionando CORS middleware
+      const corsOptions = {
+        origin: true,
+        credentials: true,
+        methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+        allowedHeaders: ['Content-Type', 'Authorization']
+      };
+      middlewares.unshift(cors(corsOptions));
+      
       return middlewares;
     },
   },
@@ -49,20 +66,20 @@ module.exports = {
             presets: ['@babel/preset-env', '@babel/preset-react'],
             plugins: [
               ['babel-plugin-module-resolver', {
-                root: ['./src'],
+                root: [path.resolve(__dirname, 'src')],
                 alias: {
-                  '@': './src'
+                  '@': path.resolve(__dirname, 'src')
                 }
               }]
             ]
-          },
-        },
+          }
+        }
       },
       {
         test: /\.css$/,
-        use: ['style-loader', 'css-loader'],
-      },
-    ],
+        use: ['style-loader', 'css-loader']
+      }
+    ]
   },
   plugins: [
     new webpack.DefinePlugin({

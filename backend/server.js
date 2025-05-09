@@ -31,9 +31,25 @@ app.get('/test-cors', (req, res) => {
 
 // Configuração do CORS
 const corsOptions = {
-    origin: isProd 
-        ? '*' 
-        : ['https://vestalize.com', 'http://vestalize.com', 'http://localhost:3000'],
+    origin: function (origin, callback) {
+        // Permite requisições de qualquer origem em desenvolvimento
+        if (!isProd || !origin) {
+            return callback(null, true);
+        }
+        
+        // Em produção, permite apenas do Render
+        const allowedOrigins = [
+            'https://sistema-nobrega-1.onrender.com',
+            'https://sistema-nobrega-1.onrender.com/api',
+            'https://sistema-nobrega-1.onrender.com:10000'
+        ];
+        
+        if (allowedOrigins.includes(origin)) {
+            callback(null, true);
+        } else {
+            callback(new Error('Not allowed by CORS'));
+        }
+    },
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With', 'Origin'],
@@ -44,38 +60,6 @@ const corsOptions = {
 };
 
 // Middleware para CORS
-app.use((req, res, next) => {
-    // Define a origem permitida
-    const origin = req.headers.origin;
-    
-    // Em produção, aceita qualquer origem
-    if (isProd) {
-        res.header('Access-Control-Allow-Origin', origin || '*');
-    } else if (origin === 'https://vestalize.com' || origin === 'http://vestalize.com' || origin === 'http://localhost:3000') {
-        res.header('Access-Control-Allow-Origin', origin);
-    }
-    
-    // Configura as credenciais
-    res.header('Access-Control-Allow-Credentials', 'true');
-    
-    // Configura os métodos permitidos
-    res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
-    
-    // Configura os headers permitidos
-    res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization, X-Requested-With, Origin');
-    
-    // Configura os headers expostos
-    res.header('Access-Control-Expose-Headers', 'Authorization');
-    
-    // Se for uma requisição OPTIONS (preflight), responde com 200
-    if (req.method === 'OPTIONS') {
-        res.header('Access-Control-Max-Age', '86400');
-        return res.status(200).end();
-    }
-    next();
-});
-
-// Configuração do CORS com cors
 app.use(cors(corsOptions));
 
 // Configuração do Sequelize com base no ambiente
