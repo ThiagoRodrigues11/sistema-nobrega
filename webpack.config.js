@@ -60,15 +60,17 @@ module.exports = {
                 }
             },
             {
-                test: /\.module\.css$/,
+                test: /\.module\.css$/, // Teste para arquivos .module.css
                 use: [
                     MiniCssExtractPlugin.loader,
                     {
                         loader: 'css-loader',
                         options: {
-                            modules: true,
-                            importLoaders: 1,
-                            localIdentName: '[name]__[local]__[hash:base64:5]'
+                            modules: {
+                                localIdentName: '[name]__[local]__[hash:base64:5]',
+                                mode: 'local'
+                            },
+                            sourceMap: true
                         }
                     }
                 ]
@@ -103,7 +105,13 @@ module.exports = {
         new CleanWebpackPlugin(),
         new HtmlWebpackPlugin({
             template: './public/index.html',
-            favicon: './public/favicon.ico'
+            favicon: './public/favicon.ico',
+            publicPath: '/',
+            minify: {
+                collapseWhitespace: true,
+                removeComments: true,
+                removeRedundantAttributes: true
+            }
         }),
         new MiniCssExtractPlugin({
             filename: '[name].css',
