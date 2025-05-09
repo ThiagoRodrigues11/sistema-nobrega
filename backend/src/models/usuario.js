@@ -1,5 +1,5 @@
-import { DataTypes } from 'sequelize';
-import { sequelize } from './index.js';
+﻿const  = require 'sequelize';
+const  = require './index.js';
 
 const Usuario = sequelize.define('usuarios', {
   id: {
@@ -23,8 +23,8 @@ const Usuario = sequelize.define('usuarios', {
   email: {
     type: DataTypes.STRING(100),
     allowNull: false
-    // Removido o índice único do email para evitar o erro de "Too many keys"
-    // A unicidade do email será garantida no nível da aplicação
+    // Removido o Ã­ndice Ãºnico do email para evitar o erro de "Too many keys"
+    // A unicidade do email serÃ¡ garantida no nÃ­vel da aplicaÃ§Ã£o
   },
   nivel_acesso: {
     type: DataTypes.ENUM('admin', 'pdv', 'blog'),
@@ -44,4 +44,4 @@ const Usuario = sequelize.define('usuarios', {
   ]
 });
 
-export default Usuario;
+module.exports = Usuario;

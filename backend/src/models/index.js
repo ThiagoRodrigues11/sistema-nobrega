@@ -1,4 +1,4 @@
-// src/models/index.js
+﻿// src/models/index.js
 const Sequelize = require('sequelize');
 const dotenv = require('dotenv');
 dotenv.config();

@@ -1,6 +1,6 @@
-import { sequelize } from '../models/index.js';
-import Categoria from '../models/categoria.js';
-import dotenv from 'dotenv';
+﻿const  = require '../models/index.js';
+const  = require '../models/categoria.js';
+const  = require 'dotenv';
 
 dotenv.config();
 
@@ -9,13 +9,13 @@ async function createCategoriaPost() {
     await sequelize.authenticate();
     console.log('Database connection established.');
 
-    // Verifica se a categoria já existe
+    // Verifica se a categoria jÃ¡ existe
     const categoriaExists = await Categoria.findOne({
       where: { nome: process.argv[2] }
     });
 
     if (categoriaExists) {
-      console.log('Categoria já existe.');
+      console.log('Categoria jÃ¡ existe.');
       process.exit(0);
     }
 
@@ -35,8 +35,8 @@ async function createCategoriaPost() {
 
 // Verifica se o nome da categoria foi fornecido
 if (!process.argv[2]) {
-  console.log('Por favor, forneça o nome da categoria.');
-  console.log('Uso: node createCategoriaPost.js "Nome da Categoria" [descrição]');
+  console.log('Por favor, forneÃ§a o nome da categoria.');
+  console.log('Uso: node createCategoriaPost.js "Nome da Categoria" [descriÃ§Ã£o]');
   process.exit(1);
 }
 

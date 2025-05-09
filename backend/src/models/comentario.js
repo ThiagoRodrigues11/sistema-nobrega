@@ -1,5 +1,5 @@
-import { DataTypes } from 'sequelize';
-import { sequelize } from './index.js';
+﻿const  = require 'sequelize';
+const  = require './index.js';
 
 const Comentario = sequelize.define('comentarios', {
   id: {
@@ -31,4 +31,4 @@ const Comentario = sequelize.define('comentarios', {
   timestamps: false
 });
 
-export default Comentario;
+module.exports = Comentario;

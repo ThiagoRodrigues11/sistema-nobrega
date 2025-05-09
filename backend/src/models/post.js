@@ -1,5 +1,5 @@
-import { DataTypes } from 'sequelize';
-import { sequelize } from './index.js';
+﻿const  = require 'sequelize';
+const  = require './index.js';
 
 const Post = sequelize.define('posts', {
   id: {
@@ -51,4 +51,4 @@ const Post = sequelize.define('posts', {
   timestamps: false
 });
 
-export default Post;
+module.exports = Post;

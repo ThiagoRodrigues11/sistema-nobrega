@@ -1,5 +1,5 @@
-import { DataTypes } from 'sequelize';
-import { sequelize } from './index.js';
+﻿const  = require 'sequelize';
+const  = require './index.js';
 
 const ItemVenda = sequelize.define('itens_venda', {
   id: {
@@ -27,4 +27,4 @@ const ItemVenda = sequelize.define('itens_venda', {
   timestamps: false
 });
 
-export default ItemVenda; 
+module.exports = ItemVenda; 
