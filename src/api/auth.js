@@ -11,6 +11,7 @@ const authApi = {
       }
       return data;
     } catch (error) {
+      console.error('Erro no login:', error);
       throw new Error('Erro ao fazer login');
     }
   },
@@ -21,15 +22,25 @@ const authApi = {
       localStorage.removeItem('user');
       return response.data;
     } catch (error) {
+      console.error('Erro no logout:', error);
       throw new Error('Erro ao fazer logout');
     }
   },
   getMe: async () => {
     try {
-      const response = await get('/auth/me');
+      const token = localStorage.getItem('token');
+      if (!token) {
+        throw new Error('Não autenticado');
+      }
+      const response = await get('/auth/me', {
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      });
       return response;
     } catch (error) {
-      throw new Error('Não autenticado');
+      console.error('Erro ao buscar usuário:', error);
+      throw error;
     }
   },
   createUser: async (data) => {

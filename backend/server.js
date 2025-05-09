@@ -59,14 +59,25 @@ const corsOptions = {
     maxAge: 86400
 };
 
-// Middleware para CORS
+// Aplicar CORS globalmente
 app.use(cors(corsOptions));
 
-// Configuração do Sequelize com base no ambiente
+// Configuração do multer
+const storage = multer.diskStorage({
+    destination: (req, file, cb) => {
+        cb(null, 'uploads/');
+    },
+    filename: (req, file, cb) => {
+        cb(null, Date.now() + '-' + file.originalname);
+    }
+});
+
+const upload = multer({ storage: storage });
+app.use('/uploads', express.static('uploads'));
+
+// Configuração do Sequelize
 const env = process.env.NODE_ENV || 'development';
 const dbConfig = config[env];
-
-// Inicialização do Sequelize
 const sequelize = new Sequelize(
     dbConfig.database,
     dbConfig.username,
@@ -79,8 +90,6 @@ const sequelize = new Sequelize(
         define: { timestamps: false }
     }
 );
-
-const PORT = process.env.PORT || 5000;
 
 // Middleware
 app.use(express.json());
@@ -97,20 +106,7 @@ app.use(session({
   }
 }));
 
-// File upload configuration
-const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, 'uploads/');
-  },
-  filename: function (req, file, cb) {
-    cb(null, Date.now() + '-' + file.originalname);
-  }
-});
-
-const upload = multer({ storage: storage });
-app.use('/uploads', express.static('uploads'));
-
-// Routes
+// Rotas
 app.use('/api', routes);
 
 // Servir arquivos estáticos do React
@@ -122,21 +118,18 @@ app.get('*', (req, res) => {
 });
 
 // Database connection and server start
-const startServer = async () => {
-  try {
-    await sequelize.authenticate();
-    console.log('Database connection has been established successfully.');
-    
-    // Sync all models with database
-    await sequelize.sync({ alter: true });
-    console.log('All models were synchronized successfully.');
-
-    app.listen(PORT, () => {
-      console.log(`Server is running on port ${PORT}`);
-    });
-  } catch (error) {
-    console.error('Unable to connect to the database:', error);
-  }
-};
+async function startServer() {
+    try {
+        await sequelize.authenticate();
+        console.log('Conexão com o banco de dados estabelecida com sucesso.');
+        
+        const PORT = process.env.PORT || 5000;
+        app.listen(PORT, () => {
+            console.log(`Servidor rodando na porta ${PORT}`);
+        });
+    } catch (error) {
+        console.error('Erro ao conectar com o banco de dados:', error);
+    }
+}
 
 startServer();
