@@ -1,34 +1,20 @@
-﻿const  = require 'sequelize';
-const  = require './index.js';
+﻿const { DataTypes } = require('sequelize');
+const sequelize = require('./index.js');
 
-const Comentario = sequelize.define('comentarios', {
-  id: {
-    type: DataTypes.INTEGER,
-    primaryKey: true,
-    autoIncrement: true
-  },
-  post_id: {
-    type: DataTypes.INTEGER,
-    allowNull: false
-  },
-  usuario_id: {
-    type: DataTypes.INTEGER,
-    allowNull: false
-  },
-  conteudo: {
-    type: DataTypes.TEXT,
-    allowNull: false
-  },
-  resposta_a: {
-    type: DataTypes.INTEGER,
-    allowNull: true
-  },
-  created_at: {
-    type: DataTypes.DATE,
-    defaultValue: DataTypes.NOW
-  }
-}, {
-  timestamps: false
-});
+module.exports = (sequelize) => {
+    const Comentario = sequelize.define('Comentario', {
+        conteudo: {
+            type: DataTypes.TEXT,
+            allowNull: false
+        },
+        resposta_a: {
+            type: DataTypes.INTEGER,
+            allowNull: true
+        }
+    }, {
+        tableName: 'comentarios',
+        timestamps: false
+    });
 
-module.exports = Comentario;
+    return Comentario;
+};

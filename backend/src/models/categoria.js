@@ -1,30 +1,20 @@
-﻿const  = require 'sequelize';
-const  = require './index.js';
+﻿const { DataTypes } = require('sequelize');
+const sequelize = require('./index.js');
 
-const Categoria = sequelize.define('categorias', {
-  id: {
-    type: DataTypes.INTEGER,
-    primaryKey: true,
-    autoIncrement: true
-  },
-  nome: {
-    type: DataTypes.STRING(100),
-    allowNull: false
-  },
-  descricao: {
-    type: DataTypes.TEXT,
-    allowNull: true
-  },
-  created_at: {
-    type: DataTypes.DATE,
-    defaultValue: DataTypes.NOW
-  },
-  updated_at: {
-    type: DataTypes.DATE,
-    defaultValue: DataTypes.NOW
-  }
-}, {
-  timestamps: false
-});
+module.exports = (sequelize) => {
+    const Categoria = sequelize.define('Categoria', {
+        nome: {
+            type: DataTypes.STRING,
+            allowNull: false
+        },
+        descricao: {
+            type: DataTypes.TEXT,
+            allowNull: true
+        }
+    }, {
+        tableName: 'categorias',
+        timestamps: false
+    });
 
-module.exports = Categoria;
+    return Categoria;
+};
