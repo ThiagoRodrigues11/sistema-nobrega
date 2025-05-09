@@ -1,12 +1,12 @@
-import { Router } from 'express';
-import Post from '../models/post.js';
-import Comentario from '../models/comentario.js';
-import Usuario from '../models/usuario.js';
-import Categoria from '../models/categoria.js';
-import { authenticateToken } from '../middleware/auth.js';
-import { deleteUploadsForPost } from '../utils/deleteUploads.js';
+const express = require('express');
+const Post = require('../models/post.js');
+const Comentario = require('../models/comentario.js');
+const Usuario = require('../models/usuario.js');
+const Categoria = require('../models/categoria.js');
+const { authenticateToken } = require('../middleware/auth.js');
+const { deleteUploadsForPost } = require('../utils/deleteUploads.js');
 
-const router = Router();
+const router = express.Router();
 
 // Listar todos os posts
 router.get('/', async (req, res) => {
@@ -21,7 +21,8 @@ router.get('/', async (req, res) => {
         },
         {
           model: Categoria,
-          as: 'categoria'
+          as: 'categoria',
+          attributes: ['nome']
         }
       ]
     });
@@ -173,4 +174,4 @@ router.delete('/comentarios/:comentarioId', async (req, res) => {
   }
 });
 
-export default router;
+module.exports = router;

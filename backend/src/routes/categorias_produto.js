@@ -1,7 +1,7 @@
-import { Router } from 'express';
-import CategoriaProduto from '../models/categoria_produto.js';
+const express = require('express');
+const CategoriaProduto = require('../models/categoria_produto.js');
 
-const router = Router();
+const router = express.Router();
 
 // Listar categorias de produto
 router.get('/', async (req, res) => {
@@ -20,14 +20,12 @@ router.post('/', async (req, res) => {
     if (!req.body.nome || typeof req.body.nome !== 'string' || req.body.nome.trim() === '') {
       return res.status(400).json({ message: 'O campo nome é obrigatório.' });
     }
-    const categoria = await CategoriaProduto.create({
-      nome: req.body.nome,
-      descricao: req.body.descricao || ''
-    });
+
+    const categoria = await CategoriaProduto.create(req.body);
     res.json(categoria);
   } catch (err) {
     console.error('Erro ao criar categoria de produto:', err);
-    res.status(400).json({ message: 'Erro ao criar categoria de produto', error: err.message });
+    res.status(500).json({ message: 'Erro ao criar categoria de produto', error: err.message });
   }
 });
 
@@ -60,4 +58,4 @@ router.delete('/:id', async (req, res) => {
   }
 });
 
-export default router;
+module.exports = router;

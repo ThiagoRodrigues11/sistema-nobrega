@@ -1,5 +1,5 @@
-import express from 'express';
-import multer from 'multer';
+const express = require('express');
+const multer = require('multer');
 
 const router = express.Router();
 
@@ -20,4 +20,4 @@ router.post('/', upload.single('file'), (req, res) => {
   res.json({ filename: req.file.filename, path: `/uploads/${req.file.filename}` });
 });
 
-export default router;
+module.exports = router;

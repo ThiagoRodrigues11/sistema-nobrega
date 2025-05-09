@@ -1,7 +1,7 @@
-import { Router } from 'express';
-import Categoria from '../models/categoria.js';
+const express = require('express');
+const Categoria = require('../models/categoria.js');
 
-const router = Router();
+const router = express.Router();
 
 // Listar categorias
 router.get('/', async (req, res) => {
@@ -19,7 +19,7 @@ router.post('/', async (req, res) => {
     const categoria = await Categoria.create(req.body);
     res.json(categoria);
   } catch (err) {
-    res.status(400).json({ message: err.message });
+    res.status(500).json({ message: err.message });
   }
 });
 
@@ -52,4 +52,4 @@ router.delete('/:id', async (req, res) => {
   }
 });
 
-export default router;
+module.exports = router;

@@ -1,9 +1,9 @@
-import { Router } from 'express';
-import bcrypt from 'bcryptjs';
-import Usuario from '../models/usuario.js';
-import jwt from 'jsonwebtoken';
+const express = require('express');
+const bcrypt = require('bcryptjs');
+const Usuario = require('../models/usuario.js');
+const jwt = require('jsonwebtoken');
 
-const router = Router();
+const router = express.Router();
 
 // Middleware para checar se é admin
 function isAdmin(req, res, next) {
@@ -111,4 +111,4 @@ router.put('/:id', isAdmin, async (req, res) => {
   }
 });
 
-export default router;
+module.exports = router;
