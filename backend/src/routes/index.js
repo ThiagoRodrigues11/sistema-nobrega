@@ -1,12 +1,12 @@
-﻿const  = require 'express';
-const  = require './auth.js';
-const  = require './produtos.js';
-const  = require './vendas.js';
-const  = require './categorias.js';
-const  = require './categorias_produto.js';
-const  = require './posts.js';
-const  = require './usuarios.js';
-const  = require './upload.js';
+﻿const express = require require 'express';
+const express = require require './auth.js';
+const express = require require './produtos.js';
+const express = require require './vendas.js';
+const express = require require './categorias.js';
+const express = require require './categorias_produto.js';
+const express = require require './posts.js';
+const express = require require './usuarios.js';
+const express = require require './upload.js';
 
 const router = Router();
 
