@@ -72,8 +72,8 @@ module.exports = {
                     {
                         loader: 'file-loader',
                         options: {
-                            outputPath: 'images',
                             name: '[name].[ext]',
+                            outputPath: 'images',
                             publicPath: '/images'
                         }
                     }
@@ -98,13 +98,12 @@ module.exports = {
         new CopyWebpackPlugin({
             patterns: [
                 {
-                    from: 'public/images',
-                    to: 'images',
-                    context: 'public'
+                    from: path.resolve(__dirname, 'public/images'),
+                    to: path.resolve(__dirname, 'dist/images')
                 },
                 {
-                    from: 'public/favicon.ico',
-                    to: 'favicon.ico'
+                    from: path.resolve(__dirname, 'public/favicon.ico'),
+                    to: path.resolve(__dirname, 'dist/favicon.ico')
                 }
             ]
         }),
