@@ -37,11 +37,13 @@ const corsOptions = {
             return callback(null, true);
         }
         
-        // Em produção, permite apenas do Render
+        // Em produção, permite do Render e do vestalize.com
         const allowedOrigins = [
             'https://sistema-nobrega-1.onrender.com',
             'https://sistema-nobrega-1.onrender.com/api',
-            'https://sistema-nobrega-1.onrender.com:10000'
+            'https://sistema-nobrega-1.onrender.com:10000',
+            'https://vestalize.com',
+            'http://vestalize.com'
         ];
         
         if (allowedOrigins.includes(origin)) {
