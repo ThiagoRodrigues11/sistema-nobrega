@@ -3,6 +3,8 @@ import { get, post } from '../api';
 import PersonalizationModal from '../components/pdv/PersonalizationModal';
 import styles from '../components/pdv/PDV.module.css';
 import { useNavigate } from 'react-router-dom';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faSearch, faPlus, faTrash, faCheckCircle } from '@fortawesome/free-solid-svg-icons';
 
 const PDV = () => {
   const [produtos, setProdutos] = useState([]);
@@ -114,16 +116,16 @@ const PDV = () => {
   return (
     <div className={styles.pdvContainer}>
       <div className={styles.pdvHeader}>
-        <h1><i className="fas fa-cash-register"></i> Ponto de Venda</h1>
+        <h1><FontAwesomeIcon icon={faSearch} /> Ponto de Venda</h1>
       </div>
       <div className={styles.pdvGrid}>
         {/* Produtos */}
         <div className={styles.produtosSection}>
           <div className={styles.cardProdutos}>
             <div className={styles.cardHeaderProdutos}>
-              <h5><i className="fas fa-boxes"></i> Produtos</h5>
+              <h5><FontAwesomeIcon icon={faSearch} /> Produtos</h5>
               <div className={styles.searchContainer}>
-                <i className="fas fa-search"></i>
+                <FontAwesomeIcon icon={faSearch} />
                 <input type="text" placeholder="Buscar produto..." value={busca} onChange={e => setBusca(e.target.value)} />
               </div>
             </div>
@@ -141,7 +143,7 @@ const PDV = () => {
                         <div>R$ {produto.preco}</div>
                         <div>Estoque: {produto.estoque}</div>
                         <button onClick={() => adicionarAoCarrinho(produto)}>
-                          <i className="fas fa-plus"></i> Adicionar
+                          <FontAwesomeIcon icon={faPlus} /> Adicionar
                         </button>
                       </div>
                     </div>
@@ -155,7 +157,7 @@ const PDV = () => {
         <div className={styles.carrinhoSection}>
           <div className={styles.carrinhoContainer}>
             <div className={styles.carrinhoHeader}>
-              <h5><i className="fas fa-shopping-cart"></i> Carrinho</h5>
+              <h5><FontAwesomeIcon icon={faSearch} /> Carrinho</h5>
             </div>
             <div className={styles.carrinhoBody}>
               <table className={styles.carrinhoTable}>
@@ -179,7 +181,7 @@ const PDV = () => {
                       <td>R$ {(item.preco * item.qtd).toFixed(2)}</td>
                       <td>
                         <button className={styles.btnRemover} onClick={() => removerDoCarrinho(item.id)} title="Remover do carrinho">
-                          <i className="fas fa-trash"></i>
+                          <FontAwesomeIcon icon={faTrash} />
                         </button>
                       </td>
                     </tr>
@@ -206,7 +208,7 @@ const PDV = () => {
                 <span>R$ {calcularTotal().toFixed(2)}</span>
               </div>
               <button onClick={finalizarVenda} className={styles.btnFinalizar}>
-                <i className="fas fa-check-circle"></i> Finalizar Venda
+                <FontAwesomeIcon icon={faCheckCircle} /> Finalizar Venda
               </button>
             </div>
           </div>

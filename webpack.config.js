@@ -67,7 +67,7 @@ module.exports = {
                 ]
             },
             {
-                test: /\.(png|jpe?g|gif)$/i,
+                test: /\.(png|jpe?g|gif|svg)$/i,
                 use: [
                     {
                         loader: 'file-loader',
@@ -97,8 +97,15 @@ module.exports = {
         }),
         new CopyWebpackPlugin({
             patterns: [
-                { from: 'public/images', to: 'images' },
-                { from: 'public/manifest.json', to: 'manifest.json' }
+                {
+                    from: 'public/images',
+                    to: 'images',
+                    context: 'public'
+                },
+                {
+                    from: 'public/favicon.ico',
+                    to: 'favicon.ico'
+                }
             ]
         }),
         new webpack.DefinePlugin({
