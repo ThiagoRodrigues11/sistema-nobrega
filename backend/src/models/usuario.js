@@ -1,47 +1,60 @@
-﻿const  = require 'sequelize';
-const  = require './index.js';
+﻿const { DataTypes } = require('sequelize');
+const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
 
-const Usuario = sequelize.define('usuarios', {
-  id: {
-    type: DataTypes.INTEGER,
-    primaryKey: true,
-    autoIncrement: true
-  },
-  username: {
-    type: DataTypes.STRING(50),
-    allowNull: false,
-    unique: true
-  },
-  password: {
-    type: DataTypes.STRING(255),
-    allowNull: false
-  },
-  nome: {
-    type: DataTypes.STRING(100),
-    allowNull: false
-  },
-  email: {
-    type: DataTypes.STRING(100),
-    allowNull: false
-    // Removido o Ã­ndice Ãºnico do email para evitar o erro de "Too many keys"
-    // A unicidade do email serÃ¡ garantida no nÃ­vel da aplicaÃ§Ã£o
-  },
-  nivel_acesso: {
-    type: DataTypes.ENUM('admin', 'pdv', 'blog'),
-    allowNull: false
-  },
-  created_at: {
-    type: DataTypes.DATE,
-    defaultValue: DataTypes.NOW
-  }
-}, {
-  timestamps: false,
-  indexes: [
-    {
-      unique: true,
-      fields: ['username']
-    }
-  ]
-});
+module.exports = (sequelize) => {
+    const Usuario = sequelize.define('Usuario', {
+        nome: {
+            type: DataTypes.STRING,
+            allowNull: false
+        },
+        email: {
+            type: DataTypes.STRING,
+            allowNull: false,
+            unique: true
+        },
+        senha: {
+            type: DataTypes.STRING,
+            allowNull: false
+        },
+        telefone: {
+            type: DataTypes.STRING,
+            allowNull: true
+        },
+        foto_perfil: {
+            type: DataTypes.STRING,
+            allowNull: true
+        },
+        data_nascimento: {
+            type: DataTypes.DATE,
+            allowNull: true
+        },
+        tipo: {
+            type: DataTypes.ENUM('admin', 'cliente'),
+            defaultValue: 'cliente'
+        }
+    }, {
+        tableName: 'usuarios',
+        timestamps: false
+    });
 
-module.exports = Usuario;
+    Usuario.beforeCreate(async (usuario) => {
+        if (usuario.senha) {
+            usuario.senha = await bcrypt.hash(usuario.senha, 10);
+        }
+    });
+
+    Usuario.prototype.validarSenha = async function(senha) {
+        return bcrypt.compare(senha, this.senha);
+    };
+
+    Usuario.prototype.gerarToken = function() {
+        return jwt.sign(
+            { id: this.id, email: this.email, tipo: this.tipo },
+            process.env.JWT_SECRET || 'seu-segredo-aqui',
+            { expiresIn: '24h' }
+        );
+    };
+
+    return Usuario;
+};
