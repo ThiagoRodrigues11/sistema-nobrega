@@ -1,54 +1,17 @@
-﻿const { DataTypes, sequelize } = require('sequelize');
-const sequelize = require('./index.js');
+﻿const { DataTypes } = require('sequelize');
 
-const Post = sequelize.define('posts', {
-  id: {
-    type: DataTypes.INTEGER,
-    primaryKey: true,
-    autoIncrement: true
-  },
-  titulo: {
-    type: DataTypes.STRING(255),
-    allowNull: false
-  },
-  conteudo: {
-    type: DataTypes.TEXT,
-    allowNull: false
-  },
-  autor_id: {
-    type: DataTypes.INTEGER,
-    allowNull: false
-  },
-  imagem: {
-    type: DataTypes.STRING(255),
-    allowNull: true
-  },
-  pdf: {
-    type: DataTypes.STRING(255),
-    allowNull: true
-  },
-  video: {
-    type: DataTypes.STRING(255),
-    allowNull: true
-  },
-  youtube: {
-    type: DataTypes.STRING(255),
-    allowNull: true
-  },
-  categoria_id: {
-    type: DataTypes.INTEGER,
-    allowNull: true
-  },
-  created_at: {
-    type: DataTypes.DATE,
-    defaultValue: DataTypes.NOW
-  },
-  updated_at: {
-    type: DataTypes.DATE,
-    defaultValue: DataTypes.NOW
-  }
-}, {
-  timestamps: false
-});
+module.exports = (sequelize) => {
+    const Post = sequelize.define('posts', {
+        id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
+        titulo: { type: DataTypes.STRING, allowNull: false },
+        conteudo: { type: DataTypes.TEXT, allowNull: false },
+        autor_id: { type: DataTypes.INTEGER, allowNull: false },
+        categoria_id: { type: DataTypes.INTEGER, allowNull: false },
+        data_publicacao: { type: DataTypes.DATE, allowNull: false, defaultValue: DataTypes.NOW }
+    }, {
+        tableName: 'posts',
+        timestamps: false
+    });
 
-module.exports = Post;
+    return Post;
+};

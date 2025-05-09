@@ -1,14 +1,16 @@
-﻿const { DataTypes, sequelize } = require('sequelize');
-const sequelize = require('./index.js');
+﻿const { DataTypes } = require('sequelize');
 
-const Venda = sequelize.define('vendas', {
-  id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
-  usuario_id: { type: DataTypes.INTEGER },
-  total: { type: DataTypes.DECIMAL(10,2) },
-  status: { type: DataTypes.ENUM('pendente', 'concluida', 'cancelada') },
-  created_at: { type: DataTypes.DATE, defaultValue: DataTypes.NOW }
-}, {
-  timestamps: false
-});
+module.exports = (sequelize) => {
+    const Venda = sequelize.define('vendas', {
+        id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
+        usuario_id: { type: DataTypes.INTEGER, allowNull: false },
+        data_venda: { type: DataTypes.DATE, allowNull: false, defaultValue: DataTypes.NOW },
+        valor_total: { type: DataTypes.DECIMAL(10, 2), allowNull: false },
+        status: { type: DataTypes.ENUM('pendente', 'pagamento', 'envio', 'entregue', 'cancelado'), defaultValue: 'pendente' }
+    }, {
+        tableName: 'vendas',
+        timestamps: false
+    });
 
-module.exports = Venda;
+    return Venda;
+};

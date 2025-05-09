@@ -1,39 +1,17 @@
 ﻿const { DataTypes } = require('sequelize');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-const sequelize = require('./index.js');
 
 module.exports = (sequelize) => {
-    const Usuario = sequelize.define('Usuario', {
-        nome: {
-            type: DataTypes.STRING,
-            allowNull: false
-        },
-        email: {
-            type: DataTypes.STRING,
-            allowNull: false,
-            unique: true
-        },
-        senha: {
-            type: DataTypes.STRING,
-            allowNull: false
-        },
-        telefone: {
-            type: DataTypes.STRING,
-            allowNull: true
-        },
-        foto_perfil: {
-            type: DataTypes.STRING,
-            allowNull: true
-        },
-        data_nascimento: {
-            type: DataTypes.DATE,
-            allowNull: true
-        },
-        tipo: {
-            type: DataTypes.ENUM('admin', 'cliente'),
-            defaultValue: 'cliente'
-        }
+    const Usuario = sequelize.define('usuarios', {
+        id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
+        nome: { type: DataTypes.STRING, allowNull: false },
+        email: { type: DataTypes.STRING, allowNull: false, unique: true },
+        senha: { type: DataTypes.STRING, allowNull: false },
+        telefone: { type: DataTypes.STRING, allowNull: true },
+        foto_perfil: { type: DataTypes.STRING, allowNull: true },
+        data_nascimento: { type: DataTypes.DATE, allowNull: true },
+        tipo: { type: DataTypes.ENUM('admin', 'cliente'), defaultValue: 'cliente' }
     }, {
         tableName: 'usuarios',
         timestamps: false
