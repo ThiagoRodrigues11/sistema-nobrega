@@ -12,7 +12,13 @@ const sequelize = new Sequelize(
     port: process.env.DB_PORT || 3306,
     dialect: 'mysql',
     logging: false,
-    define: { timestamps: false }
+    define: { timestamps: false },
+    dialectOptions: {
+      connectTimeout: 60000, // 60 segundos
+      timeout: 60000,
+      acquire: 60000,
+      useUTC: false
+    }
   }
 );
 
