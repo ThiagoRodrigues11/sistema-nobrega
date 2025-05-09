@@ -1,12 +1,12 @@
-import { Router } from 'express';
-import authRoutes from './auth.js';
-import produtosRoutes from './produtos.js';
-import vendasRoutes from './vendas.js';
-import categoriasRoutes from './categorias.js';
-import categoriasProdutoRoutes from './categorias_produto.js';
-import postsRoutes from './posts.js';
-import usuariosRoutes from './usuarios.js';
-import uploadRoutes from './upload.js';
+﻿const  = require 'express';
+const  = require './auth.js';
+const  = require './produtos.js';
+const  = require './vendas.js';
+const  = require './categorias.js';
+const  = require './categorias_produto.js';
+const  = require './posts.js';
+const  = require './usuarios.js';
+const  = require './upload.js';
 
 const router = Router();
 
@@ -19,4 +19,4 @@ router.use('/posts', postsRoutes);
 router.use('/usuarios', usuariosRoutes);
 router.use('/upload', uploadRoutes);
 
-export default router;
+module.exports = router;
