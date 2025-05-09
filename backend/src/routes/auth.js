@@ -1,9 +1,9 @@
-import { Router } from 'express';
-import bcrypt from 'bcryptjs';
-import jwt from 'jsonwebtoken';
-import Usuario from '../models/usuario.js';
+const express = require('express');
+const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
+const Usuario = require('../models/usuario.js');
 
-const router = Router();
+const router = express.Router();
 
 // Middleware para verificar token
 const authMiddleware = (req, res, next) => {
@@ -92,4 +92,4 @@ router.get('/me', authMiddleware, async (req, res) => {
     }
 });
 
-export default router;
+module.exports = router;

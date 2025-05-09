@@ -1,9 +1,9 @@
-import { Router } from 'express';
-import Produto from '../models/produto.js';
-import CategoriaProduto from '../models/categoria_produto.js';
-import { authenticateToken, authorizeRole } from '../middleware/auth.js';
+const express = require('express');
+const Produto = require('../models/produto.js');
+const CategoriaProduto = require('../models/categoria_produto.js');
+const { authenticateToken, authorizeRole } = require('../middleware/auth.js');
 
-const router = Router();
+const router = express.Router();
 
 // Listar produtos
 router.get('/', async (req, res) => {
@@ -63,4 +63,4 @@ router.delete('/:id', authenticateToken, authorizeRole('admin'), async (req, res
   }
 });
 
-export default router;
+module.exports = router;

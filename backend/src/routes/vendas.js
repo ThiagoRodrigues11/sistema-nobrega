@@ -1,11 +1,11 @@
-import { Router } from 'express';
-import Venda from '../models/venda.js';
-import ItemVenda from '../models/item_venda.js';
-import Produto from '../models/produto.js';
-import Usuario from '../models/usuario.js';
-import { authenticateToken, authorizeRole } from '../middleware/auth.js';
+const express = require('express');
+const Venda = require('../models/venda.js');
+const ItemVenda = require('../models/item_venda.js');
+const Produto = require('../models/produto.js');
+const Usuario = require('../models/usuario.js');
+const { authenticateToken, authorizeRole } = require('../middleware/auth.js');
 
-const router = Router();
+const router = express.Router();
 
 // Listar vendas (admin)
 router.get('/', authenticateToken, authorizeRole('admin'), async (req, res) => {
@@ -27,7 +27,7 @@ router.get('/', authenticateToken, authorizeRole('admin'), async (req, res) => {
           ]
         }
       ]
-      });
+    });
     res.json(vendas);
   } catch (err) {
     res.status(500).json({ message: err.message });
@@ -107,4 +107,4 @@ router.delete('/:id', authenticateToken, authorizeRole('admin'), async (req, res
   }
 });
 
-export default router;
+module.exports = router;
