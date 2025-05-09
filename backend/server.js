@@ -18,36 +18,22 @@ console.log('JWT_SECRET:', process.env.JWT_SECRET);
 const isProd = process.env.NODE_ENV === 'production';
 console.log('Ambiente:', isProd ? 'Produção' : 'Desenvolvimento');
 
-// Rota de teste CORS
-const app = express();
-app.get('/test-cors', (req, res) => {
-    res.header('Access-Control-Allow-Origin', req.headers.origin || '*');
-    res.header('Access-Control-Allow-Credentials', 'true');
-    res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
-    res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization, X-Requested-With, Origin');
-    res.header('Access-Control-Max-Age', '86400');
-    res.json({ message: 'CORS test successful', origin: req.headers.origin, environment: isProd ? 'production' : 'development' });
-});
-
 // Configuração do CORS
 const corsOptions = {
     origin: function (origin, callback) {
-        // Permite requisições de qualquer origem em desenvolvimento
-        if (!isProd || !origin) {
+        if (!origin) {
             return callback(null, true);
         }
         
-        // Em produção, permite do Render e do vestalize.com
+        // Origens permitidas
         const allowedOrigins = [
             'https://sistema-nobrega-1.onrender.com',
-            'https://sistema-nobrega-1.onrender.com/api',
-            'https://sistema-nobrega-1.onrender.com:10000',
             'https://vestalize.com',
-            'http://vestalize.com'
+            'http://localhost:3000'
         ];
         
         if (allowedOrigins.includes(origin)) {
-            callback(null, true);
+            callback(null, origin);
         } else {
             callback(new Error('Not allowed by CORS'));
         }
@@ -61,8 +47,29 @@ const corsOptions = {
     maxAge: 86400
 };
 
-// Aplicar CORS globalmente
+// Middleware de CORS
+const app = express();
+app.use((req, res, next) => {
+    // Verificar se é uma requisição OPTIONS (preflight)
+    if (req.method === 'OPTIONS') {
+        res.header('Access-Control-Allow-Origin', req.headers.origin);
+        res.header('Access-Control-Allow-Methods', corsOptions.methods.join(', '));
+        res.header('Access-Control-Allow-Headers', corsOptions.allowedHeaders.join(', '));
+        res.header('Access-Control-Allow-Credentials', 'true');
+        return res.status(204).end();
+    }
+    next();
+});
+
+// Aplicar CORS
 app.use(cors(corsOptions));
+
+// Rota de teste
+app.get('/test-cors', (req, res) => {
+    res.header('Access-Control-Allow-Origin', req.headers.origin);
+    res.header('Access-Control-Allow-Credentials', 'true');
+    res.json({ message: 'CORS test successful', origin: req.headers.origin });
+});
 
 // Configuração do multer
 const storage = multer.diskStorage({
@@ -125,7 +132,7 @@ async function startServer() {
         await sequelize.authenticate();
         console.log('Conexão com o banco de dados estabelecida com sucesso.');
         
-        const PORT = process.env.PORT || 5000;
+        const PORT = process.env.PORT || 3000;
         app.listen(PORT, () => {
             console.log(`Servidor rodando na porta ${PORT}`);
         });
